@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quaderno Italiano</title>
+<meta name="theme-color" content="#1f4fb5">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Italiano">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>window.SITE_BUILD="57395ba8fb2f";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an Italian school exercise book (quaderno a quadretti): squared paper, red margin rule, blue-ink answers. Dark = lavagna (chalkboard). */
+:root{
+  color-scheme:light;
+  --paper:#f7f8f4; --grid:#dfe5ea; --ink:#1d2433; --muted:#5d6676;
+  --blue:#1f4fb5; --blue-soft:#e3eafa; --red:#c8323c; --margin:#e7a3a8;
+  --ok:#1f7a4d; --ok-soft:#dff1e6; --bad:#b3262f; --bad-soft:#f8e1e2; --warn:#a86b00;
+  --card:#ffffff; --line:#cdd4dc;
+  --f-display:"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --f-body:"Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root{
+  --paper:#1b2420; --grid:#24302b; --ink:#e9ece6; --muted:#9aa69f;
+  --blue:#8fb0ff; --blue-soft:#243049; --red:#ff8a8f; --margin:#6b3a3e;
+  --ok:#6fd39d; --ok-soft:#1d3a2b; --bad:#ff8a8f; --bad-soft:#40242a; --warn:#f0b955;
+  --card:#222d28; --line:#34433c; color-scheme:dark}}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background-color:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;min-height:100vh}
+[hidden]{display:none!important}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.wrap{max-width:860px;margin:0 auto;padding-top:max(20px,env(safe-area-inset-top,0px));padding-bottom:max(48px,env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.page{position:relative;padding-left:24px}
+.page::before{content:"";position:absolute;left:6px;top:0;bottom:0;width:2px;background:var(--margin)}
+
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 em{font-style:italic;font-weight:500;color:var(--blue)}
+.sub{color:var(--muted);margin:6px 0 0;font-size:.95rem}
+.stats{display:flex;gap:18px;font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-display);font-size:1.6rem;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+
+nav{display:flex;gap:2px;flex-wrap:wrap;border-bottom:2px solid var(--ink);margin-bottom:22px}
+nav button{font:600 .95rem var(--f-body);background:none;border:0;color:var(--muted);padding:10px 12px;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-2px}
+nav button[aria-selected="true"]{color:var(--ink);border-color:var(--blue)}
+nav button:hover{color:var(--ink)}
+nav button small{font-family:var(--f-display);font-style:italic;font-weight:500;font-size:.95rem;color:var(--blue);margin-left:4px}
+@media (max-width:560px){nav button small{display:none}nav button{padding:10px 9px;font-size:.92rem}}
+
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn{font:600 .95rem var(--f-body);border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:10px 16px;border-radius:4px;cursor:pointer}
+.btn:hover{background:var(--blue-soft)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:var(--paper)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:default}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
+.chip{font:500 .85rem var(--f-body);border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:6px 12px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft);color:var(--blue);font-weight:600}
+.label{font:500 .72rem var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+/* Flashcards */
+.cardstage{perspective:1200px;margin:8px 0 16px}
+.flash{position:relative;height:260px;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.3,.7,.3,1);cursor:pointer}
+.flash.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:var(--card);border:2px solid var(--ink);border-radius:6px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;text-align:center;box-shadow:6px 6px 0 var(--blue-soft)}
+.face.back{transform:rotateY(180deg)}
+.face .word{font-family:var(--f-display);font-size:clamp(2rem,7vw,3rem);font-weight:500;line-height:1.1;overflow-wrap:anywhere}
+.face .en{font-size:1.5rem;font-weight:600}
+.face .hint{position:absolute;bottom:12px;font:400 .75rem var(--f-mono);color:var(--muted)}
+.face .tag{position:absolute;top:12px;left:14px}
+.box-dots{position:absolute;top:14px;right:14px;display:flex;gap:4px}
+.box-dots i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--blue)}
+.box-dots i.on{background:var(--blue)}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.grade .btn{padding:12px 6px}
+.grade small{display:block;font-weight:400;font-size:.75rem;color:var(--muted)}
+.btn.primary small{color:inherit;opacity:.85}
+.speak{border:1.5px solid var(--line);background:var(--card);color:var(--blue);border-radius:999px;width:42px;height:42px;cursor:pointer;display:inline-grid;place-items:center;flex:none}
+.speak:hover{border-color:var(--blue)}
+.speak svg{width:18px;height:18px}
+.progressbar{height:6px;background:var(--grid);border-radius:3px;overflow:hidden;margin:4px 0 12px}
+.progressbar span{display:block;height:100%;background:var(--blue);transition:width .3s}
+.meta{display:flex;justify-content:space-between;gap:12px;font:400 .8rem var(--f-mono);color:var(--muted);flex-wrap:wrap}
+
+/* Quiz */
+.q-prompt{font-family:var(--f-display);font-size:clamp(1.8rem,6vw,2.6rem);margin:6px 0 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;overflow-wrap:anywhere}
+.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.options{grid-template-columns:1fr}}
+.opt{font:500 1.05rem var(--f-body);text-align:left;padding:14px 16px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:4px;cursor:pointer;min-width:0;overflow-wrap:anywhere}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);text-decoration:line-through}
+.opt:disabled{cursor:default;color:var(--ink);opacity:1}
+.nextrow{display:flex;justify-content:flex-end;margin-top:16px;min-height:46px}
+.result{background:var(--card);border:2px solid var(--ink);border-radius:6px;padding:24px;text-align:center}
+.result .score{font-family:var(--f-display);font-size:4rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.result .verdict{font-family:var(--f-display);font-style:italic;font-size:1.4rem;color:var(--blue);margin:6px 0 16px}
+.misses{text-align:left;margin:0 auto 18px;max-width:420px;padding:0;list-style:none}
+.misses li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.misses li span:first-child{font-family:var(--f-display);font-size:1.1rem}
+
+/* Verbs */
+.verb-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.verb-head h2{font-family:var(--f-display);font-size:2.4rem;margin:0;font-weight:700}
+.verb-head span{color:var(--muted)}
+.conj{display:grid;grid-template-columns:5.5rem minmax(0,1fr) 1.6rem;gap:8px 12px;align-items:center;max-width:460px;margin:16px 0}
+.conj label{font-family:var(--f-display);font-style:italic;font-size:1.25rem;color:var(--muted);text-align:right}
+.conj input{font:500 1.15rem var(--f-body);color:var(--blue);background:transparent;border:0;border-bottom:2px solid var(--line);border-radius:0;padding:6px 2px;min-width:0;width:100%}
+.conj input:focus{outline:none;border-color:var(--blue)}
+.conj input.right{border-color:var(--ok);color:var(--ok)}
+.conj input.near{border-color:var(--warn)}
+.conj input.wrong{border-color:var(--bad);color:var(--bad)}
+.conj .mark{font-weight:700;font-size:1.1rem}
+.conj .fix{grid-column:2/4;margin-top:-6px;font:400 .82rem var(--f-mono);color:var(--muted)}
+.chip .best{font:500 .7rem var(--f-mono);color:var(--ok);margin-left:4px}
+
+/* Phrases */
+.guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:22px}
+.guide div{background:var(--card);border:1.5px solid var(--line);border-radius:4px;padding:10px 12px}
+.guide b{font-family:var(--f-display);font-size:1.3rem;color:var(--red)}
+.guide p{margin:2px 0 0;font-size:.85rem;color:var(--muted)}
+h3{font-family:var(--f-display);font-style:italic;font-weight:500;font-size:1.6rem;margin:22px 0 6px;color:var(--red)}
+.phrase{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.phrase .txt{min-width:0;flex:1}
+.phrase .it{font-family:var(--f-display);font-size:1.3rem;line-height:1.2}
+.phrase .say{font:400 .8rem var(--f-mono);color:var(--blue);margin-top:2px}
+.phrase .en{font-size:.9rem;color:var(--muted)}
+
+/* Sync */
+.panel{background:var(--card);border:2px solid var(--ink);border-radius:6px;padding:18px;margin-bottom:16px}
+.panel h2{font-family:var(--f-display);font-size:1.5rem;margin:0 0 4px}
+.panel p{margin:4px 0 12px;color:var(--muted);max-width:60ch}
+.panel .row{display:flex;flex-wrap:wrap;gap:8px}
+.status{font:400 .82rem var(--f-mono);color:var(--muted);margin-top:10px}
+.panel textarea{width:100%;height:84px;font:400 .8rem var(--f-mono);background:var(--paper);color:var(--ink);border:1.5px solid var(--line);border-radius:4px;padding:8px;margin:6px 0}
+.panel input[type=file]{max-width:100%;font-size:.9rem;margin:6px 0}
+details summary{cursor:pointer;color:var(--blue);font-weight:600;padding:6px 0}
+.preview{background:var(--blue-soft);border-radius:4px;padding:12px 14px;margin:10px 0}
+.preview ul{margin:6px 0 0 18px;padding:0}
+.steps{margin:0;padding-left:20px;color:var(--ink)}
+.steps li{margin:4px 0}
+.footnote{margin-top:28px;font-size:.8rem;color:var(--muted)}
+.linkish{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+.confirm{display:inline-flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:8px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:6px;font-size:.92rem;max-width:min(92vw,440px);z-index:20;transition:opacity .4s}
+.toast.hide{opacity:0}
+@media (prefers-reduced-motion:reduce){.flash{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="page">
+<header>
+  <div>
+    <h1>Quaderno <em>italiano</em></h1>
+    <p class="sub">Flashcards, quizzes, verbs and phrases. Tap the speaker to hear it said.</p>
+  </div>
+  <div class="stats" aria-label="Your progress">
+    <div><b id="st-learned">0</b>words learned</div>
+    <div><b id="st-streak">0</b>day streak</div>
+    <div><b id="st-best">–</b>best quiz</div>
+  </div>
+</header>
+
+<nav role="tablist">
+  <button role="tab" data-tab="cards" aria-selected="true">Cards<small>carte</small></button>
+  <button role="tab" data-tab="quiz" aria-selected="false">Quiz<small>prova</small></button>
+  <button role="tab" data-tab="verbs" aria-selected="false">Verbs<small>verbi</small></button>
+  <button role="tab" data-tab="phrases" aria-selected="false">Phrases<small>frasi</small></button>
+  <button role="tab" data-tab="sync" aria-selected="false">Sync<small>sincronizza</small></button>
+</nav>
+
+<section id="tab-cards"></section>
+<section id="tab-quiz" hidden></section>
+<section id="tab-verbs" hidden></section>
+<section id="tab-phrases" hidden></section>
+<section id="tab-sync" hidden>
+  <div class="panel">
+    <h2>Send my progress</h2>
+    <p id="sync-intro">Send your progress to your other device, then open the Sync tab there to bring it in. Nothing is overwritten: the two sets are merged, and for each word the most recent practice wins.</p>
+    <div class="row">
+      <button class="btn primary" id="sync-send">Send my progress…</button>
+      <button class="btn" id="sync-copy">Copy as text</button>
+    </div>
+    <div class="status" id="sync-sent"></div>
+  </div>
+  <div class="panel">
+    <h2>Bring in progress</h2>
+    <p>Choose the progress file you sent from your other device, or paste the text you copied.</p>
+    <input type="file" id="sync-file" accept=".json,application/json,text/plain">
+    <details><summary>Or paste the text instead</summary>
+      <textarea id="sync-paste" placeholder="Paste the text from “Copy as text” on your other device" spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
+      <button class="btn" id="sync-paste-go">Check pasted text</button>
+    </details>
+    <div id="sync-preview" hidden></div>
+    <div class="status" id="sync-got"></div>
+  </div>
+  <div class="panel" id="install-panel">
+    <h2>Put it on your phone</h2>
+    <ol class="steps" id="install-steps"></ol>
+  </div>
+</section>
+
+<p class="footnote"><span id="ver"></span> · Progress is saved on this device; use Sync to share it. <button class="linkish" id="reset">Reset progress</button><span id="reset-confirm" hidden class="confirm">Erase everything on this device? <button class="btn" id="reset-yes">Yes, reset</button><button class="btn" id="reset-no">Cancel</button></span></p>
+</div></div>
+
+<script>
+const APP_VERSION="1.0";
+const DECKS = {
+ "Basics":[["ciao","hi / bye"],["buongiorno","good morning"],["buonasera","good evening"],["buonanotte","good night"],["arrivederci","goodbye"],["per favore","please"],["grazie","thank you"],["prego","you're welcome"],["scusi","excuse me (formal)"],["sì","yes"],["mi dispiace","I'm sorry"],["va bene","okay / all right"],["piacere","nice to meet you"],["benvenuto","welcome"],["non lo so","I don't know"]],
+ "Numbers":[["uno","one"],["due","two"],["tre","three"],["quattro","four"],["cinque","five"],["sei","six"],["sette","seven"],["otto","eight"],["nove","nine"],["dieci","ten"],["venti","twenty"],["cinquanta","fifty"],["cento","one hundred"],["mille","one thousand"]],
+ "Food & café":[["il pane","bread"],["l'acqua","water"],["il vino","wine"],["la birra","beer"],["il caffè","coffee"],["il formaggio","cheese"],["la carne","meat"],["il pesce","fish"],["la verdura","vegetables"],["la frutta","fruit"],["il conto","the bill"],["la colazione","breakfast"],["il pranzo","lunch"],["la cena","dinner"],["il gelato","ice cream"]],
+ "Travel":[["la stazione","station"],["il treno","train"],["il biglietto","ticket"],["l'aeroporto","airport"],["l'albergo","hotel"],["la camera","room"],["la strada","street / road"],["la piazza","square"],["a destra","to the right"],["a sinistra","to the left"],["sempre dritto","straight on"],["vicino","near"],["lontano","far"],["la spiaggia","beach"],["la chiave","key"]],
+ "Family":[["la madre","mother"],["il padre","father"],["il fratello","brother"],["la sorella","sister"],["il figlio","son"],["la figlia","daughter"],["il marito","husband"],["la moglie","wife"],["il nonno","grandfather"],["la nonna","grandmother"],["l'amico","friend (m)"],["i genitori","parents"]],
+ "Time & days":[["oggi","today"],["domani","tomorrow"],["ieri","yesterday"],["adesso","now"],["lunedì","Monday"],["martedì","Tuesday"],["mercoledì","Wednesday"],["giovedì","Thursday"],["venerdì","Friday"],["sabato","Saturday"],["domenica","Sunday"],["la settimana","week"],["il mese","month"],["l'anno","year"]],
+ "Colours":[["rosso","red"],["blu","blue"],["verde","green"],["giallo","yellow"],["bianco","white"],["nero","black"],["grigio","grey"],["arancione","orange"],["rosa","pink"],["marrone","brown"]],
+ "Home":[["la casa","house / home"],["la porta","door"],["la finestra","window"],["la cucina","kitchen"],["il bagno","bathroom"],["il letto","bed"],["la tavola","table (dining)"],["la sedia","chair"],["il giardino","garden"],["le scale","stairs"]]
+};
+const VERBS = {
+ essere:["to be","sono","sei","è","siamo","siete","sono"],
+ avere:["to have","ho","hai","ha","abbiamo","avete","hanno"],
+ andare:["to go","vado","vai","va","andiamo","andate","vanno"],
+ fare:["to do / make","faccio","fai","fa","facciamo","fate","fanno"],
+ parlare:["to speak","parlo","parli","parla","parliamo","parlate","parlano"],
+ mangiare:["to eat","mangio","mangi","mangia","mangiamo","mangiate","mangiano"],
+ vivere:["to live","vivo","vivi","vive","viviamo","vivete","vivono"],
+ dormire:["to sleep","dormo","dormi","dorme","dormiamo","dormite","dormono"],
+ capire:["to understand","capisco","capisci","capisce","capiamo","capite","capiscono"],
+ volere:["to want","voglio","vuoi","vuole","vogliamo","volete","vogliono"],
+ potere:["to be able","posso","puoi","può","possiamo","potete","possono"],
+ venire:["to come","vengo","vieni","viene","veniamo","venite","vengono"]
+};
+const PRONOUNS=["io","tu","lui / lei","noi","voi","loro"];
+const PHRASES = {
+ "Al bar":[["Un caffè, per favore.","oon kahf-FEH, pehr fah-VOH-reh","A coffee, please."],["Quanto costa?","KWAHN-toh KOH-stah","How much is it?"],["Il conto, per favore.","eel KOHN-toh, pehr fah-VOH-reh","The bill, please."],["Vorrei un bicchiere d'acqua.","vohr-RAY oon beek-KYEH-reh DAHK-kwah","I'd like a glass of water."],["Posso pagare con la carta?","POHS-soh pah-GAH-reh kohn lah KAHR-tah","Can I pay by card?"]],
+ "In giro":[["Dov'è la stazione?","doh-VEH lah stah-TSYOH-neh","Where is the station?"],["A che ora parte il treno?","ah keh OH-rah PAHR-teh eel TREH-noh","What time does the train leave?"],["Un biglietto per Roma, per favore.","oon bee-LYEHT-toh pehr ROH-mah","A ticket to Rome, please."],["È lontano?","eh lohn-TAH-noh","Is it far?"],["Mi può aiutare?","mee pwoh ah-yoo-TAH-reh","Can you help me?"]],
+ "Conversazione":[["Come stai?","KOH-meh STAH-ee","How are you? (informal)"],["Sto bene, grazie.","stoh BEH-neh, GRAH-tsyeh","I'm well, thanks."],["Come ti chiami?","KOH-meh tee KYAH-mee","What's your name?"],["Mi chiamo…","mee KYAH-moh","My name is…"],["Parla inglese?","PAHR-lah een-GLEH-zeh","Do you speak English?"],["Non capisco.","nohn kah-PEE-skoh","I don't understand."],["Può ripetere, per favore?","pwoh ree-PEH-teh-reh","Could you repeat that, please?"],["Più lentamente, per favore.","pyoo lehn-tah-MEHN-teh","More slowly, please."]],
+ "Emergenze":[["Aiuto!","ah-YOO-toh","Help!"],["Ho bisogno di un medico.","oh bee-ZOH-nyoh dee oon MEH-dee-koh","I need a doctor."],["Dov'è la farmacia?","doh-VEH lah fahr-mah-CHEE-ah","Where is the pharmacy?"],["Ho perso il passaporto.","oh PEHR-soh eel pahs-sah-POHR-toh","I've lost my passport."]]
+};
+
+/* ---------- storage ----------
+   words: { italian: [box 0–5, lastPractisedMs] }   best: [score, ms]   verbs: { verb: [best of 6, ms] }
+   days: ["YYYY-MM-DD"]   resetAt: ms (anything older is ignored when merging) */
+const KEY="quaderno-italiano";
+let S={words:{},best:null,verbs:{},days:[],resetAt:0,deck:"Basics",quizDir:"it",quizDeck:"All",lastSent:null,lastGot:null};
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function box(it){return S.words[it]?S.words[it][0]:0}
+function setBox(it,b){S.words[it]=[b,Date.now()]}
+function dayKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function markStudied(){const t=dayKey(new Date());if(!S.days.includes(t)){S.days.push(t);S.days.sort();S.days=S.days.slice(-400)}save();renderStats()}
+function streak(){const set=new Set(S.days);let n=0;const d=new Date();if(!set.has(dayKey(d)))d.setDate(d.getDate()-1);
+  while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1)}return n}
+function learnedCount(){return Object.values(S.words).filter(w=>w[0]>=3).length}
+function renderStats(){
+  document.getElementById("st-learned").textContent=learnedCount();
+  document.getElementById("st-streak").textContent=streak();
+  document.getElementById("st-best").textContent=S.best==null?"–":S.best[0]+"/10";
+}
+
+/* ---------- speech ---------- */
+const canSpeak="speechSynthesis" in window;
+let itVoice=null;
+function pickVoice(){try{const v=speechSynthesis.getVoices();itVoice=v.find(x=>/^it/i.test(x.lang))||null}catch(e){}}
+if(canSpeak){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}}
+function say(text){if(!canSpeak)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace("…",""));u.lang="it-IT";if(itVoice)u.voice=itVoice;u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+function spkBtn(text){if(!canSpeak)return"";return `<button class="speak" aria-label="Hear “${esc(text)}”" data-say="${esc(text)}">${SPK}</button>`}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-say]");if(b){e.stopPropagation();say(b.dataset.say)}},true);
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function strip(s){return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim()}
+const ALL=Object.entries(DECKS).flatMap(([d,ws])=>ws.map(([it,en])=>({it,en,deck:d})));
+function toast(msg,ms){const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>t.classList.add("hide"),ms||2800);setTimeout(()=>t.remove(),(ms||2800)+600)}
+
+/* ---------- tabs ---------- */
+let currentTab="cards";
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
+  currentTab=b.dataset.tab;
+  document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));
+  ["cards","quiz","verbs","phrases","sync"].forEach(t=>document.getElementById("tab-"+t).hidden=t!==currentTab);
+  applyUpdateIfSafe();
+}));
+
+/* ---------- flashcards (Leitner boxes 0–5) ---------- */
+const C=document.getElementById("tab-cards");
+let queue=[],cur=null,flipped=false,done=0;
+function buildQueue(){
+  const ws=DECKS[S.deck].map(([it,en])=>({it,en}));
+  queue=shuffle(ws).sort((a,b)=>box(a.it)-box(b.it)).slice(0,10);
+  done=0;next();
+}
+function next(){cur=queue.shift()||null;flipped=false;renderCards()}
+function renderCards(){
+  const deckChips=Object.keys(DECKS).map(d=>{const ws=DECKS[d];const m=ws.filter(([it])=>box(it)>=3).length;
+    return `<button class="chip" data-deck="${esc(d)}" aria-pressed="${d===S.deck}">${esc(d)} <span class="label">${m}/${ws.length}</span></button>`}).join("");
+  let body;
+  if(!cur){
+    body=`<div class="result"><div class="score">${done}</div><div class="verdict">Bravo! Round finished.</div>
+      <p>Words you mark “Again” come back first next round.</p><button class="btn primary" id="again-round">Another round</button></div>`;
+  }else{
+    const b=box(cur.it);
+    const dots=[0,1,2,3,4].map(i=>`<i class="${i<b?"on":""}"></i>`).join("");
+    const total=done+queue.length+1;
+    body=`<div class="meta"><span>Card ${done+1} of ${total}</span><span>${esc(S.deck)}</span></div>
+    <div class="progressbar"><span style="width:${done/total*100}%"></span></div>
+    <div class="cardstage"><div class="flash ${flipped?"flipped":""}" id="flash" tabindex="0" role="button" aria-label="Flip card">
+      <div class="face"><span class="tag label">Italiano</span><div class="box-dots" title="Memory level">${dots}</div>
+        <div class="word">${esc(cur.it)}</div>${spkBtn(cur.it)}<span class="hint">tap to flip</span></div>
+      <div class="face back"><span class="tag label">English</span><div class="en">${esc(cur.en)}</div>
+        <div class="word" style="font-size:1.4rem;color:var(--blue)">${esc(cur.it)}</div>${spkBtn(cur.it)}</div>
+    </div></div>
+    <div class="grade">
+      <button class="btn" data-g="0" ${flipped?"":"disabled"}>Again<small>didn't know it</small></button>
+      <button class="btn" data-g="1" ${flipped?"":"disabled"}>Good<small>got there</small></button>
+      <button class="btn primary" data-g="2" ${flipped?"":"disabled"}>Easy<small>knew it instantly</small></button>
+    </div>`;
+  }
+  C.innerHTML=`<div class="toolbar">${deckChips}</div>${body}`;
+}
+let flipAt=0;
+function flip(){if(!cur)return;flipped=!flipped;flipAt=Date.now();document.getElementById("flash").classList.toggle("flipped",flipped);
+  C.querySelectorAll("[data-g]").forEach(b=>b.disabled=!flipped);if(flipped)say(cur.it)}
+function grade(g){
+  if(Date.now()-flipAt<300)return; // ignore a double tap landing on a grade button
+  const b=box(cur.it);
+  if(g===0){setBox(cur.it,0);queue.splice(Math.min(3,queue.length),0,cur)}
+  else{setBox(cur.it,Math.min(5,b+g));done++}
+  markStudied();next();
+}
+C.addEventListener("click",e=>{
+  const d=e.target.closest("[data-deck]");if(d){S.deck=d.dataset.deck;save();buildQueue();return}
+  if(e.target.closest("#again-round")){buildQueue();applyUpdateIfSafe();return}
+  const g=e.target.closest("[data-g]");if(g){grade(+g.dataset.g);return}
+  if(e.target.closest("#flash"))flip();
+});
+document.addEventListener("keydown",e=>{
+  if(currentTab!=="cards"||!cur||e.target.matches("input,textarea"))return;
+  if(e.key===" "){e.preventDefault();flip()}
+  else if(flipped&&["1","2","3"].includes(e.key)){flipAt=0;grade(+e.key-1)}
+});
+
+/* ---------- quiz ---------- */
+const Q=document.getElementById("tab-quiz");
+let qs=[],qi=0,score=0,misses=[],answered=false;
+function startQuiz(){
+  const pool=S.quizDeck==="All"?ALL:ALL.filter(w=>w.deck===S.quizDeck);
+  qs=shuffle(pool).slice(0,10).map(w=>{
+    const same=pool.filter(x=>x.it!==w.it);
+    const wrong=shuffle(same.length>=3?same:ALL.filter(x=>x.it!==w.it)).slice(0,3);
+    return{w,opts:shuffle([w,...wrong])};
+  });
+  qi=0;score=0;misses=[];answered=false;renderQuiz();
+}
+function quizInProgress(){return qi>0&&qi<qs.length||answered}
+function renderQuiz(){
+  const decks=["All",...Object.keys(DECKS)].map(d=>`<button class="chip" data-qdeck="${esc(d)}" aria-pressed="${d===S.quizDeck}">${esc(d)}</button>`).join("");
+  const dir=`<button class="chip" data-dir="it" aria-pressed="${S.quizDir==="it"}">Italian → English</button><button class="chip" data-dir="en" aria-pressed="${S.quizDir==="en"}">English → Italian</button>`;
+  let body;
+  if(qi>=qs.length){
+    const v=score===10?"Perfetto!":score>=8?"Molto bene!":score>=5?"Non male.":"Coraggio, try again.";
+    body=`<div class="result"><div class="score">${score}<span style="font-size:1.6rem;color:var(--muted)">/${qs.length}</span></div><div class="verdict">${v}</div>
+     ${misses.length?`<p class="label">To review</p><ul class="misses">${misses.map(w=>`<li><span>${esc(w.it)}</span><span>${esc(w.en)}</span></li>`).join("")}</ul>`:""}
+     <button class="btn primary" id="q-restart">New quiz</button></div>`;
+  }else{
+    const {w,opts}=qs[qi];const itFirst=S.quizDir==="it";
+    body=`<div class="meta"><span>Question ${qi+1} of ${qs.length}</span><span>Score ${score}</span></div>
+     <div class="progressbar"><span style="width:${qi/qs.length*100}%"></span></div>
+     <p class="label">${itFirst?"What does this mean?":"How do you say this in Italian?"}</p>
+     <div class="q-prompt">${esc(itFirst?w.it:w.en)} ${itFirst?spkBtn(w.it):""}</div>
+     <div class="options">${opts.map((o,i)=>`<button class="opt" data-o="${i}">${esc(itFirst?o.en:o.it)}</button>`).join("")}</div>
+     <div class="nextrow"><button class="btn primary" id="q-next" hidden>Next →</button></div>`;
+  }
+  Q.innerHTML=`<div class="toolbar">${dir}</div><div class="toolbar">${decks}</div>${body}`;
+}
+let answeredAt=0;
+Q.addEventListener("click",e=>{
+  const dk=e.target.closest("[data-qdeck]");if(dk){S.quizDeck=dk.dataset.qdeck;save();startQuiz();return}
+  const dr=e.target.closest("[data-dir]");if(dr){S.quizDir=dr.dataset.dir;save();startQuiz();return}
+  if(e.target.closest("#q-restart")){startQuiz();applyUpdateIfSafe();return}
+  if(e.target.closest("#q-next")){if(Date.now()-answeredAt<400)return;qi++;answered=false;
+    if(qi>=qs.length){if(S.best==null||score>S.best[0])S.best=[score,Date.now()];markStudied()}renderQuiz();return}
+  const o=e.target.closest("[data-o]");if(!o||answered)return;
+  answered=true;answeredAt=Date.now();const {w,opts}=qs[qi];const pick=opts[+o.dataset.o];
+  Q.querySelectorAll(".opt").forEach((b,i)=>{b.disabled=true;if(opts[i]===w)b.classList.add("right")});
+  if(pick===w){score++;setBox(w.it,Math.min(5,box(w.it)+1))}else{o.classList.add("wrong");misses.push(w);setBox(w.it,0)}
+  save();say(w.it);const n=document.getElementById("q-next");n.hidden=false;
+});
+
+/* ---------- verbs ---------- */
+const V=document.getElementById("tab-verbs");
+let verb="essere";
+function renderVerbs(){
+  const [en]=VERBS[verb];
+  V.innerHTML=`<div class="toolbar">${Object.keys(VERBS).map(v=>{const b=S.verbs[v];return `<button class="chip" data-verb="${v}" aria-pressed="${v===verb}">${v}${b?`<span class="best">${b[0]}/6</span>`:""}</button>`}).join("")}</div>
+  <div class="verb-head"><h2>${verb}</h2><span>${en} · present tense (presente)</span>${spkBtn(verb)}</div>
+  <form id="conj-form" autocomplete="off"><div class="conj">
+  ${PRONOUNS.map((p,i)=>`<label for="c${i}">${p}</label><input id="c${i}" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="${i<5?"next":"done"}"><span class="mark" id="m${i}"></span><span class="fix" id="f${i}" hidden></span>`).join("")}
+  </div>
+  <div class="toolbar"><button class="btn primary" type="submit">Check answers</button><button class="btn" type="button" id="conj-show">Show answers</button><button class="btn" type="button" id="conj-clear">Clear</button></div></form>
+  <p class="label" id="conj-score"></p>`;
+}
+function verbsInProgress(){return [...V.querySelectorAll(".conj input")].some(i=>i.value.trim()&&!i.className)}
+function checkVerbs(show){
+  const forms=VERBS[verb].slice(1);let right=0;
+  forms.forEach((f,i)=>{const inp=document.getElementById("c"+i),m=document.getElementById("m"+i),fx=document.getElementById("f"+i);
+    inp.classList.remove("right","near","wrong");fx.hidden=true;
+    if(show){inp.value=f;inp.classList.add("right");m.textContent="";return}
+    const v=inp.value.trim().toLowerCase();
+    if(v===f){inp.classList.add("right");m.textContent="✓";m.style.color="var(--ok)";right++}
+    else if(v&&strip(v)===strip(f)){inp.classList.add("near");m.textContent="~";m.style.color="var(--warn)";fx.hidden=false;fx.textContent="Mind the accent: "+f;right++}
+    else{inp.classList.add("wrong");m.textContent="✗";m.style.color="var(--bad)";fx.hidden=false;fx.textContent="Answer: "+f}
+  });
+  document.getElementById("conj-score").textContent=show?"":`${right} of 6 correct`;
+  if(!show){const b=S.verbs[verb];if(!b||right>b[0])S.verbs[verb]=[right,Date.now()];markStudied();
+    const chip=V.querySelector(`[data-verb="${verb}"]`);if(chip)chip.innerHTML=`${verb}<span class="best">${S.verbs[verb][0]}/6</span>`}
+}
+V.addEventListener("click",e=>{
+  const b=e.target.closest("[data-verb]");if(b){verb=b.dataset.verb;renderVerbs();return}
+  if(e.target.closest("#conj-show"))checkVerbs(true);
+  if(e.target.closest("#conj-clear")){renderVerbs();document.getElementById("c0").focus()}
+});
+V.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.matches(".conj input")){const i=+e.target.id.slice(1);if(i<5){e.preventDefault();document.getElementById("c"+(i+1)).focus()}}});
+V.addEventListener("submit",e=>{e.preventDefault();document.activeElement&&document.activeElement.blur();checkVerbs(false)});
+
+/* ---------- phrases ---------- */
+document.getElementById("tab-phrases").innerHTML=`<p class="label">Pronunciation in four rules</p>
+<div class="guide">
+ <div><b>ci · ce</b><p>“ch” as in church: <i>ciao</i></p></div>
+ <div><b>chi · che</b><p>hard “k”: <i>chiave</i></p></div>
+ <div><b>gli</b><p>like “lli” in million: <i>figlio</i></p></div>
+ <div><b>gn</b><p>like “ny” in canyon: <i>bisogno</i></p></div>
+</div>
+${Object.entries(PHRASES).map(([sec,list])=>`<h3>${sec}</h3>${list.map(([it,s,en])=>`<div class="phrase">${spkBtn(it)}<div class="txt"><div class="it">${esc(it)}</div><div class="say">${esc(s)}</div><div class="en">${esc(en)}</div></div></div>`).join("")}`).join("")}`;
+
+/* ---------- sync between devices ----------
+   No server: one device sends a small progress file (or copies it as text), the other brings it in.
+   Merging never loses practice: for each word the most recently practised level wins,
+   study days are combined, and best scores keep the higher one. */
+function deviceName(){const u=navigator.userAgent;
+  if(/iPhone/.test(u))return"iPhone";if(/iPad/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return"iPad";
+  if(/Android/.test(u))return/Mobile/.test(u)?"Android phone":"Android tablet";if(/Macintosh/.test(u))return"Mac";if(/Windows/.test(u))return"Windows PC";return"computer"}
+function syncBody(){return{app:"quaderno-italiano",format:1,from:deviceName(),made:Date.now(),appVersion:APP_VERSION,
+  words:S.words,days:S.days,best:S.best,verbs:S.verbs,resetAt:S.resetAt}}
+function syncFile(type){const d=new Date();return new File([JSON.stringify(syncBody())],
+  `italiano-progress-${deviceName().replace(/\s+/g,"-")}-${dayKey(d)}.json`,{type})}
+function fmt(ms){return new Date(ms).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}
+function sentDone(){S.lastSent=Date.now();save();refreshSyncStatus()}
+document.getElementById("sync-send").onclick=async()=>{
+  for(const type of ["application/json","text/plain"]){
+    const f=syncFile(type);
+    if(navigator.canShare&&navigator.canShare({files:[f]})){
+      try{await navigator.share({files:[f],title:"Italiano progress"});sentDone();return}
+      catch(e){if(e&&e.name==="AbortError")return}
+    }
+  }
+  try{const f=syncFile("application/json"),a=document.createElement("a");a.href=URL.createObjectURL(f);a.download=f.name;
+    document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);sentDone();
+    toast("Progress file saved to your Downloads. Send it to your other device by AirDrop, email or Files.",5000)}
+  catch(e){toast("Couldn't make the file. Use Copy as text instead.")}
+};
+document.getElementById("sync-copy").onclick=async()=>{
+  const text=JSON.stringify(syncBody());
+  try{await navigator.clipboard.writeText(text);sentDone();toast("Copied. Paste it on your other device (Apple devices share a clipboard), or into Notes or Messages.",5000)}
+  catch(e){const ta=document.getElementById("sync-paste");ta.closest("details").open=true;ta.value=text;ta.select();toast("Select-all and copy the text shown below.")}
+};
+let pending=null;
+function readSync(text){
+  let d;try{d=JSON.parse(text)}catch(e){throw new Error("That isn't an Italiano progress file.")}
+  if(!d||d.app!=="quaderno-italiano"||typeof d.words!=="object")throw new Error("That isn't an Italiano progress file.");
+  return d;
+}
+function planMerge(d){
+  const cutoff=Math.max(S.resetAt||0,d.resetAt||0);
+  const newer=[];let wordsIn={};
+  for(const [it,v] of Object.entries(d.words||{})){
+    if(!Array.isArray(v)||v[1]<=cutoff)continue;
+    const mine=S.words[it];
+    if(!mine||mine[1]<=cutoff||v[1]>mine[1]){if(!mine||mine[0]!==v[0]||mine[1]<=cutoff)newer.push([it,v[0],mine&&mine[1]>cutoff?mine[0]:null]);wordsIn[it]=v}
+  }
+  const newDays=(d.days||[]).filter(x=>!S.days.includes(x));
+  const bestIn=d.best&&d.best[1]>cutoff&&(!S.best||S.best[1]<=cutoff||d.best[0]>S.best[0])?d.best:null;
+  const verbsIn={};for(const [v,b] of Object.entries(d.verbs||{})){const m=S.verbs[v];if(b[1]>cutoff&&(!m||m[1]<=cutoff||b[0]>m[0]))verbsIn[v]=b}
+  return{d,cutoff,newer,wordsIn,newDays,bestIn,verbsIn};
+}
+function showPreview(text){
+  const box_=document.getElementById("sync-preview");
+  try{pending=planMerge(readSync(text))}catch(e){pending=null;box_.hidden=true;toast(e.message);return}
+  const p=pending;const nothing=!p.newer.length&&!p.newDays.length&&!p.bestIn&&!Object.keys(p.verbsIn).length&&!Object.keys(p.wordsIn).length;
+  const list=p.newer.slice(0,8).map(([it,nb,ob])=>`<li>${esc(it)}: level ${ob==null?"new":ob} → ${nb}</li>`).join("")+(p.newer.length>8?`<li>…and ${p.newer.length-8} more</li>`:"");
+  box_.innerHTML=`<div class="preview"><b>From your ${esc(p.d.from||"other device")}, made ${fmt(p.d.made)}</b>
+    ${nothing?`<p style="margin:6px 0 0;color:var(--ink)">This device already has everything in that file.</p>`:
+    `<ul>${p.newer.length?`<li>${p.newer.length} word${p.newer.length===1?"":"s"} practised more recently there</li>`:""}
+    ${p.newDays.length?`<li>${p.newDays.length} study day${p.newDays.length===1?"":"s"} to add to your streak</li>`:""}
+    ${p.bestIn?`<li>Best quiz score ${p.bestIn[0]}/10</li>`:""}
+    ${Object.keys(p.verbsIn).length?`<li>Better verb scores for ${Object.keys(p.verbsIn).join(", ")}</li>`:""}</ul>
+    ${list?`<details><summary>Show words</summary><ul>${list}</ul></details>`:""}`}
+    <div class="row" style="margin-top:10px">${nothing?"":`<button class="btn primary" id="sync-merge">Merge into this device</button>`}<button class="btn" id="sync-cancel">${nothing?"OK":"Cancel"}</button></div></div>`;
+  box_.hidden=false;
+}
+function clearPending(){pending=null;document.getElementById("sync-preview").hidden=true;document.getElementById("sync-file").value="";document.getElementById("sync-paste").value=""}
+document.getElementById("sync-file").onchange=async e=>{const f=e.target.files[0];if(!f)return;
+  if(f.size>2e6){toast("That file is too large to be a progress file.");return}showPreview(await f.text())};
+document.getElementById("sync-paste-go").onclick=()=>{const t=document.getElementById("sync-paste").value.trim();if(!t){toast("Paste the text first.");return}showPreview(t)};
+document.getElementById("sync-preview").addEventListener("click",e=>{
+  if(e.target.closest("#sync-cancel"))clearPending();
+  if(e.target.closest("#sync-merge")&&pending){
+    const p=pending;
+    if(p.cutoff>(S.resetAt||0)){S.resetAt=p.cutoff;for(const k in S.words)if(S.words[k][1]<=p.cutoff)delete S.words[k];
+      if(S.best&&S.best[1]<=p.cutoff)S.best=null;for(const k in S.verbs)if(S.verbs[k][1]<=p.cutoff)delete S.verbs[k]}
+    Object.assign(S.words,p.wordsIn);Object.assign(S.verbs,p.verbsIn);
+    const fromDay=p.cutoff?dayKey(new Date(p.cutoff)):"";
+    S.days=[...new Set([...S.days,...(p.d.days||[])])].filter(x=>typeof x==="string"&&x>=fromDay).sort().slice(-400);
+    if(p.bestIn)S.best=p.bestIn;S.lastGot=Date.now();save();
+    const n=p.newer.length;clearPending();renderStats();buildQueue();renderVerbs();refreshSyncStatus();
+    toast(`Merged. ${n} word${n===1?"":"s"} updated.`);
+  }
+});
+function refreshSyncStatus(){
+  document.getElementById("sync-sent").textContent=S.lastSent?"Last sent from this device: "+fmt(S.lastSent):"";
+  document.getElementById("sync-got").textContent=S.lastGot?"Last brought in: "+fmt(S.lastGot):"";
+}
+
+/* ---------- install help ---------- */
+const standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+let deferredPrompt=null;
+function installSteps(){
+  const el=document.getElementById("install-steps"),dev=deviceName();
+  if(standalone){el.innerHTML=`<li>Installed. It opens from your Home Screen and works offline.</li>`;return}
+  if(dev==="iPhone"||dev==="iPad")el.innerHTML=`<li>Open this page in <b>Safari</b>.</li><li>Tap the <b>Share</b> button, then <b>Add to Home Screen</b>.</li><li>Open it from the Home Screen icon from now on. It keeps its own progress, so sync it once from your laptop.</li>`;
+  else if(deferredPrompt)el.innerHTML=`<li><button class="btn primary" id="install-btn">Install Italiano</button></li><li>It then opens in its own window and works offline.</li>`;
+  else el.innerHTML=`<li>On your phone, open the same link and add it to your Home Screen.</li><li>On a laptop in Chrome or Edge, use the install icon in the address bar. In Safari on a Mac: File → Add to Dock.</li>`;
+}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;installSteps()});
+document.getElementById("install-steps").addEventListener("click",e=>{if(e.target.closest("#install-btn")&&deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;installSteps()})}});
+
+/* ---------- reset ---------- */
+const rc=document.getElementById("reset-confirm");
+document.getElementById("reset").onclick=()=>rc.hidden=false;
+document.getElementById("reset-no").onclick=()=>rc.hidden=true;
+document.getElementById("reset-yes").onclick=()=>{S.words={};S.best=null;S.days=[];S.verbs={};S.resetAt=Date.now();save();rc.hidden=true;renderStats();buildQueue();startQuiz();renderVerbs();
+  toast("Progress reset on this device. Syncing will carry the reset to your other device.",4000)};
+
+/* ---------- offline + automatic updates (same approach as Site Ready) ----------
+   Opens instantly from the saved copy. In the background it checks a tiny version.json; if there is a
+   newer build it downloads it and switches over when you're not mid-quiz or mid-verb. */
+const hosted=/^https?:$/.test(location.protocol);
+let updateReady=false,lastCheck=0;
+const UPDATE_CACHE="italiano-app";
+function checkForUpdate(){
+  if(!window.SITE_BUILD||!window.caches||updateReady||Date.now()-lastCheck<60000)return;
+  lastCheck=Date.now();const bust="t="+Date.now();
+  fetch("version.json?"+bust,{cache:"no-store"}).then(r=>r.ok?r.json():null).then(v=>{
+    if(!v||!v.build||v.build===window.SITE_BUILD)return;
+    return fetch("index.html?"+bust,{cache:"no-store"}).then(r=>r.ok?r.text():null).then(html=>{
+      if(!html||html.indexOf(v.build)<0)return;
+      const res=new Response(html,{headers:{"Content-Type":"text/html; charset=utf-8"}});
+      return caches.open(UPDATE_CACHE).then(c=>Promise.all([c.put("index.html",res.clone()),c.put("./",res)])).then(()=>{updateReady=true;applyUpdateIfSafe()});
+    });
+  }).catch(()=>{});
+}
+function applyUpdateIfSafe(){
+  if(!updateReady||quizInProgress()||verbsInProgress()||pending||(currentTab==="cards"&&cur&&done>0))return;
+  try{sessionStorage.setItem("italiano.updated","1")}catch(e){}
+  location.reload();
+}
+if(hosted){
+  if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+  checkForUpdate();
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)checkForUpdate()});
+  if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
+  try{if(sessionStorage.getItem("italiano.updated")){sessionStorage.removeItem("italiano.updated");setTimeout(()=>toast("Updated to version "+APP_VERSION),300)}}catch(e){}
+}
+
+document.getElementById("ver").textContent="Version "+APP_VERSION;
+renderStats();buildQueue();startQuiz();renderVerbs();refreshSyncStatus();installSteps();
+window.__italiano={state:()=>S,merge:t=>showPreview(t)};
+</script>
+</body>
+</html>

@@ -12,7 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Italiano">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<script>window.SITE_BUILD="57395ba8fb2f";</script>
+<script>window.SITE_BUILD="2c4b1ce21ecd";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -52,12 +52,14 @@ h1 em{font-style:italic;font-weight:500;color:var(--blue)}
 .stats{display:flex;gap:18px;font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
 .stats b{display:block;font-family:var(--f-display);font-size:1.6rem;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
 
-nav{display:flex;gap:2px;flex-wrap:wrap;border-bottom:2px solid var(--ink);margin-bottom:22px}
+nav{display:flex;gap:2px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;border-bottom:2px solid var(--ink);margin-bottom:22px}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none}
 nav button{font:600 .95rem var(--f-body);background:none;border:0;color:var(--muted);padding:10px 12px;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-2px}
 nav button[aria-selected="true"]{color:var(--ink);border-color:var(--blue)}
 nav button:hover{color:var(--ink)}
 nav button small{font-family:var(--f-display);font-style:italic;font-weight:500;font-size:.95rem;color:var(--blue);margin-left:4px}
-@media (max-width:560px){nav button small{display:none}nav button{padding:10px 9px;font-size:.92rem}}
+@media (max-width:640px){nav button small{display:none}nav button{padding:10px 8px;font-size:.92rem}}
 
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .btn{font:600 .95rem var(--f-body);border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:10px 16px;border-radius:4px;cursor:pointer}
@@ -158,6 +160,63 @@ details summary{cursor:pointer;color:var(--blue);font-weight:600;padding:6px 0}
 .confirm{display:inline-flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:8px}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:6px;font-size:.92rem;max-width:min(92vw,440px);z-index:20;transition:opacity .4s}
 .toast.hide{opacity:0}
+/* Course */
+.course-head{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between}
+.course-head h2,.lesson h2{font-family:var(--f-display);font-size:clamp(1.7rem,5vw,2.2rem);margin:0;line-height:1.1;text-wrap:balance}
+.nextup{background:var(--blue);color:var(--paper);border-radius:6px;padding:18px;margin:14px 0 22px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.nextup .label{color:inherit;opacity:.85}
+.nextup b{display:block;font-family:var(--f-display);font-size:1.5rem;font-weight:700;line-height:1.15}
+.nextup p{margin:4px 0 0;opacity:.9;font-size:.92rem}
+.nextup .btn{background:var(--paper);color:var(--blue);border-color:var(--paper)}
+.lessons{list-style:none;margin:0;padding:0;counter-reset:l}
+.lessons li{border-bottom:1px solid var(--line)}
+.lessons button{width:100%;display:grid;grid-template-columns:2.2rem minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;background:none;border:0;padding:12px 4px;cursor:pointer;color:var(--ink);font:inherit;-webkit-user-select:text;user-select:text}
+.lessons button:hover{background:var(--blue-soft)}
+.lessons .n{font:500 .85rem var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.lessons .t{min-width:0}
+.lessons .t b{display:block;font-family:var(--f-display);font-size:1.2rem;font-weight:500;line-height:1.2}
+.lessons .t span{font-size:.85rem;color:var(--muted)}
+.pill{font:600 .72rem var(--f-mono);padding:3px 8px;border-radius:999px;white-space:nowrap;border:1.5px solid var(--line);color:var(--muted)}
+.pill.done{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.pill.part{border-color:var(--warn);color:var(--warn)}
+.backlink{background:none;border:0;color:var(--blue);font:600 .95rem var(--f-body);padding:4px 0;cursor:pointer;margin-bottom:10px}
+.lesson .goal{color:var(--muted);margin:6px 0 16px}
+.notes{max-width:68ch}
+.notes p,.notes li{line-height:1.6}
+.notes ul{padding-left:20px}
+.notes table,.tscroll table{border-collapse:collapse;margin:10px 0 14px;background:var(--card);font-size:.92rem}
+.notes th,.notes td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+.notes th{font:500 .72rem var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--paper)}
+.notes td i,.notes p i,.notes li i{color:var(--blue);font-style:italic}
+.notes>table{display:block;overflow-x:auto;max-width:100%;width:max-content}
+.tscroll{overflow-x:auto;max-width:100%}
+.examples{margin:16px 0 20px;border-top:2px solid var(--ink)}
+.examples .phrase .it{font-size:1.15rem}
+.ex-card{background:var(--card);border:2px solid var(--ink);border-radius:6px;padding:18px;box-shadow:6px 6px 0 var(--blue-soft)}
+.ex-q{font-family:var(--f-display);font-size:clamp(1.3rem,4.6vw,1.75rem);line-height:1.3;margin:4px 0 14px;overflow-wrap:anywhere}
+.ex-q i{color:var(--blue)}
+.blank{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--blue);margin:0 2px}
+.ex-input{font:500 1.2rem var(--f-body);color:var(--blue);background:transparent;border:0;border-bottom:2px solid var(--line);border-radius:0;padding:8px 2px;width:100%;max-width:420px}
+.ex-input:focus{outline:none;border-color:var(--blue)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:48px;padding:8px 0}
+.tiles.answer{border-bottom:2px solid var(--line);margin-bottom:10px}
+.tile{font:500 1.05rem var(--f-body);padding:8px 12px;border:1.5px solid var(--ink);border-radius:4px;background:var(--paper);color:var(--ink);cursor:pointer}
+.tile:hover{border-color:var(--blue)}
+.feedback{margin-top:14px;padding:12px 14px;border-radius:4px;border-left:4px solid}
+.feedback.ok{background:var(--ok-soft);border-color:var(--ok)}
+.feedback.bad{background:var(--bad-soft);border-color:var(--bad)}
+.feedback b{display:block}
+.feedback .ans{font-family:var(--f-display);font-size:1.2rem}
+.ex-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
+.review-tag{font:600 .72rem var(--f-mono);color:var(--warn);text-transform:uppercase;letter-spacing:.06em}
+/* Verbs trainer */
+.vgroup{margin-bottom:10px}
+.vgroup .label{display:block;margin-bottom:6px}
+.aux-note{font-size:.88rem;color:var(--muted);margin:4px 0 0;max-width:60ch}
+.qf-prompt{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin-bottom:12px}
+.qf-prompt .who{font-family:var(--f-display);font-style:italic;font-size:1.6rem;color:var(--muted)}
+.qf-prompt .verb{font-family:var(--f-display);font-size:2rem;font-weight:700}
+.qf-prompt .tense{font:500 .8rem var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--blue)}
 @media (prefers-reduced-motion:reduce){.flash{transition:none}}
 </style>
 </head>
@@ -166,31 +225,33 @@ details summary{cursor:pointer;color:var(--blue);font-weight:600;padding:6px 0}
 <header>
   <div>
     <h1>Quaderno <em>italiano</em></h1>
-    <p class="sub">Flashcards, quizzes, verbs and phrases. Tap the speaker to hear it said.</p>
+    <p class="sub">A course in Italian grammar, with verbs, vocabulary and phrases. Tap the speaker to hear it said.</p>
   </div>
   <div class="stats" aria-label="Your progress">
+    <div><b id="st-lessons">0</b>lessons done</div>
     <div><b id="st-learned">0</b>words learned</div>
     <div><b id="st-streak">0</b>day streak</div>
-    <div><b id="st-best">–</b>best quiz</div>
   </div>
 </header>
 
 <nav role="tablist">
-  <button role="tab" data-tab="cards" aria-selected="true">Cards<small>carte</small></button>
-  <button role="tab" data-tab="quiz" aria-selected="false">Quiz<small>prova</small></button>
+  <button role="tab" data-tab="course" aria-selected="true">Course<small>corso</small></button>
   <button role="tab" data-tab="verbs" aria-selected="false">Verbs<small>verbi</small></button>
+  <button role="tab" data-tab="cards" aria-selected="false">Words<small>parole</small></button>
+  <button role="tab" data-tab="quiz" aria-selected="false">Quiz<small>prova</small></button>
   <button role="tab" data-tab="phrases" aria-selected="false">Phrases<small>frasi</small></button>
   <button role="tab" data-tab="sync" aria-selected="false">Sync<small>sincronizza</small></button>
 </nav>
 
-<section id="tab-cards"></section>
+<section id="tab-course"></section>
+<section id="tab-cards" hidden></section>
 <section id="tab-quiz" hidden></section>
 <section id="tab-verbs" hidden></section>
 <section id="tab-phrases" hidden></section>
 <section id="tab-sync" hidden>
   <div class="panel">
     <h2>Send my progress</h2>
-    <p id="sync-intro">Send your progress to your other device, then open the Sync tab there to bring it in. Nothing is overwritten: the two sets are merged, and for each word the most recent practice wins.</p>
+    <p id="sync-intro">Send your progress to your other device, then open the Sync tab there to bring it in. Nothing is overwritten: the two sets are merged. Lessons and verb tables keep the better score, and for each word the most recent practice wins.</p>
     <div class="row">
       <button class="btn primary" id="sync-send">Send my progress…</button>
       <button class="btn" id="sync-copy">Copy as text</button>
@@ -218,7 +279,568 @@ details summary{cursor:pointer;color:var(--blue);font-weight:600;padding:6px 0}
 </div></div>
 
 <script>
-const APP_VERSION="1.0";
+/* Quaderno Italiano: the course.
+   Each lesson: id, it (Italian title), title, goal, notes (HTML), examples [[it, en]], ex (exercises).
+   Exercise types:
+     {t:"mc",   q, o:[options], a:index, why}
+     {t:"fill", q (with ___), a:[accepted answers], en (optional translation), why}
+     {t:"build", en, a:"Italian sentence", extra:[distractor words]}            */
+const COURSE = [
+{id:"pron", it:"Pronuncia", title:"Sounds and stress", goal:"Read any Italian word aloud correctly.",
+notes:`<p>Italian is spelled the way it sounds. Learn a handful of rules and you can read any word aloud. Every vowel is pronounced, including at the end of a word: <i>pane</i> is PAH-neh, never "pain".</p>
+<table><tr><th>Spelling</th><th>Sound</th><th>Example</th></tr>
+<tr><td>c, g + e/i</td><td>soft: "ch", "j"</td><td><i>cena</i> CHEH-nah, <i>gelato</i> jeh-LAH-toh</td></tr>
+<tr><td>c, g + a/o/u</td><td>hard: "k", "g"</td><td><i>casa</i>, <i>gatto</i></td></tr>
+<tr><td>ch, gh + e/i</td><td>hard: "k", "g"</td><td><i>chiave</i> KYAH-veh, <i>spaghetti</i></td></tr>
+<tr><td>ci, gi + a/o/u</td><td>the i only softens</td><td><i>ciao</i> "chow", <i>giorno</i> JOR-noh</td></tr>
+<tr><td>sc + e/i</td><td>"sh"</td><td><i>pesce</i> PEH-sheh</td></tr>
+<tr><td>gli</td><td>"lli" in million</td><td><i>figlio</i> FEE-lyoh</td></tr>
+<tr><td>gn</td><td>"ny" in canyon</td><td><i>bagno</i> BAH-nyoh</td></tr>
+<tr><td>z</td><td>"ts" or "dz"</td><td><i>pizza</i>, <i>zero</i></td></tr>
+<tr><td>h</td><td>silent</td><td><i>ho</i> = "oh"</td></tr></table>
+<p><b>Double consonants are held longer</b>, and it changes the meaning: <i>pena</i> (pain) and <i>penna</i> (pen), <i>caro</i> (dear) and <i>carro</i> (cart).</p>
+<p><b>Stress</b> usually falls on the second-to-last syllable: ra-GAZ-zo, sta-ZIO-ne. A written accent marks a stressed final vowel: <i>città</i>, <i>caffè</i>, <i>perché</i>. Some words stress earlier, such as TA-vo-lo and MAC-chi-na, and you pick these up as you go.</p>`,
+examples:[["cena","dinner"],["chiesa","church"],["giorno","day"],["pesce","fish"],["figlio","son"],["bagno","bathroom"],["città","city"],["penna","pen"]],
+ex:[
+{t:"mc",q:"In <i>cena</i>, how is the c said?",o:["ch, as in church","k, as in kite","s, as in sun"],a:0,why:"c before e or i is soft."},
+{t:"mc",q:"In <i>chiave</i>, how is ch said?",o:["k, as in kite","ch, as in church","sh, as in shop"],a:0,why:"In Italian, ch is always a hard k sound."},
+{t:"mc",q:"Which word has a \"sh\" sound?",o:["pesce","pesca","pacco"],a:0,why:"sc before e or i sounds like sh. <i>Pesca</i> (peach) has a hard \"sk\"."},
+{t:"mc",q:"<i>gli</i> in <i>figlio</i> sounds like…",o:["the lli in million","the gl in glue","the g in go"],a:0},
+{t:"mc",q:"<i>gn</i> in <i>bagno</i> sounds like…",o:["the ny in canyon","g, then n","just n"],a:0},
+{t:"mc",q:"<i>penna</i> means pen. What does <i>pena</i>, with one n, mean?",o:["pain or sorrow","pen as well","pan"],a:0,why:"Double consonants change the meaning, so hold them longer."},
+{t:"mc",q:"Where is the stress in <i>città</i>?",o:["On the last syllable: cit-TÀ","On the first: CIT-tà"],a:0,why:"A written accent marks a stressed final vowel."},
+{t:"mc",q:"How do you say the h in <i>ho</i> (I have)?",o:["You don't. It's silent","Like the h in hat","Like a k"],a:0},
+{t:"mc",q:"Which word has a hard g, as in go?",o:["spaghetti","gelato","giorno"],a:0,why:"gh keeps the g hard before e and i."}
+]},
+
+{id:"nouns", it:"I nomi", title:"Nouns: gender and plural", goal:"Know whether a noun is masculine or feminine and make it plural.",
+notes:`<p>Every noun is <b>masculine</b> or <b>feminine</b>, and the ending usually tells you which:</p>
+<ul><li><b>-o</b> is masculine: <i>il libro</i> (book)</li><li><b>-a</b> is feminine: <i>la casa</i> (house)</li><li><b>-e</b> can be either: <i>il pane</i> (bread, m), <i>la chiave</i> (key, f), so learn these with their article.</li></ul>
+<p>To make a plural, change the last vowel:</p>
+<table><tr><th>Singular</th><th>Plural</th><th>Example</th></tr>
+<tr><td>-o</td><td>-i</td><td>libro → libri</td></tr>
+<tr><td>-a</td><td>-e</td><td>casa → case</td></tr>
+<tr><td>-e</td><td>-i</td><td>chiave → chiavi, fiore → fiori</td></tr></table>
+<p><b>Nouns that don't change in the plural:</b> those ending in an accented vowel (<i>la città → le città</i>, <i>il caffè → i caffè</i>), shortened words (<i>la foto → le foto</i>, <i>la bici → le bici</i>), and borrowed words (<i>il bar → i bar</i>, <i>lo sport → gli sport</i>).</p>
+<p><b>Exceptions to learn:</b> <i>il problema, il programma, il sistema</i> are masculine although they end in -a (plural <i>problemi</i>). <i>La mano</i> (hand) is feminine (plural <i>le mani</i>). <i>L'uomo</i> (man) becomes <i>gli uomini</i>.</p>
+<p><b>Spelling:</b> -ca and -ga add an h to keep the hard sound: <i>amica → amiche</i>. Most -go words do the same (<i>lago → laghi</i>). -co varies: <i>gioco → giochi</i>, but <i>amico → amici</i>.</p>`,
+examples:[["il libro, i libri","the book, the books"],["la casa, le case","the house, the houses"],["la chiave, le chiavi","the key, the keys"],["la città, le città","the city, the cities"],["il problema, i problemi","the problem, the problems"]],
+ex:[
+{t:"fill",q:"il libro → i ___",a:["libri"],why:"-o becomes -i."},
+{t:"fill",q:"la casa → le ___",a:["case"],why:"-a becomes -e."},
+{t:"fill",q:"la chiave → le ___",a:["chiavi"],why:"-e becomes -i."},
+{t:"fill",q:"il treno → i ___",a:["treni"]},
+{t:"fill",q:"la città → le ___",a:["città"],why:"Words ending in an accented vowel don't change."},
+{t:"mc",q:"Which is right for <i>problema</i>?",o:["il problema (masculine)","la problema (feminine)"],a:0,why:"Words from Greek ending in -ma are masculine."},
+{t:"mc",q:"Which is right for <i>mano</i> (hand)?",o:["la mano (feminine)","il mano (masculine)"],a:0},
+{t:"fill",q:"l'amica → le ___",a:["amiche"],why:"-ca becomes -che, which keeps the hard k sound."},
+{t:"mc",q:"What's the plural of <i>il caffè</i>?",o:["i caffè","i caffi","i caffèi"],a:0}
+]},
+
+{id:"articles", it:"Gli articoli", title:"Articles: the and a", goal:"Choose il, lo, la, l', i, gli, le, un, uno, una.",
+notes:`<p>The word for "the" depends on the noun's gender and number, and on the sound the noun starts with.</p>
+<table><tr><th></th><th>Singular</th><th>Plural</th></tr>
+<tr><td>Masculine, most words</td><td><b>il</b> treno</td><td><b>i</b> treni</td></tr>
+<tr><td>Masculine before s + consonant, z, gn, ps, y</td><td><b>lo</b> studente, <b>lo</b> zaino</td><td><b>gli</b> studenti, <b>gli</b> zaini</td></tr>
+<tr><td>Masculine before a vowel</td><td><b>l'</b>albergo</td><td><b>gli</b> alberghi</td></tr>
+<tr><td>Feminine</td><td><b>la</b> camera</td><td><b>le</b> camere</td></tr>
+<tr><td>Feminine before a vowel</td><td><b>l'</b>amica</td><td><b>le</b> amiche</td></tr></table>
+<p><b>"A" or "an"</b> works the same way: <b>un</b> treno, <b>un</b> amico (no apostrophe) · <b>uno</b> studente, <b>uno</b> zaino · <b>una</b> casa · <b>un'</b>amica.</p>
+<p><b>Italian uses "the" more than English does:</b> for things in general (<i>Il caffè è buono</i>, Coffee is good; <i>Mi piace il vino</i>, I like wine), for languages (<i>L'italiano è bello</i>), and with possessives (<i>il mio libro</i>, my book).</p>`,
+examples:[["lo studente, gli studenti","the student, the students"],["l'albergo, gli alberghi","the hotel, the hotels"],["uno zaino","a rucksack"],["un'amica","a (female) friend"],["Mi piace il vino.","I like wine."]],
+ex:[
+{t:"fill",q:"___ treno (the)",a:["il"]},
+{t:"fill",q:"___ studente (the)",a:["lo"],why:"s + consonant takes lo."},
+{t:"fill",q:"___ amico (the)",a:["l'"],why:"Masculine before a vowel: l'."},
+{t:"fill",q:"___ studenti (the, plural)",a:["gli"]},
+{t:"fill",q:"___ amiche (the, plural)",a:["le"]},
+{t:"fill",q:"___ zaino (a)",a:["uno"],why:"z takes uno, like lo."},
+{t:"fill",q:"___ amica (a)",a:["un'"],why:"Feminine before a vowel: un' with an apostrophe."},
+{t:"fill",q:"___ albergo (a)",a:["un"],why:"Masculine before a vowel: un, with no apostrophe."},
+{t:"fill",q:"___ libri (the)",a:["i"]},
+{t:"mc",q:"<i>Mi piace ___ vino.</i> (I like wine.)",o:["il","(no article)","un"],a:0,why:"Italian uses the article for things in general."}
+]},
+
+{id:"adj", it:"Gli aggettivi", title:"Adjectives", goal:"Make adjectives agree and put them in the right place.",
+notes:`<p>Adjectives <b>agree</b> with their noun in gender and number. There are two types:</p>
+<table><tr><th></th><th>m. sing.</th><th>f. sing.</th><th>m. pl.</th><th>f. pl.</th></tr>
+<tr><td>-o type</td><td>ross<b>o</b></td><td>ross<b>a</b></td><td>ross<b>i</b></td><td>ross<b>e</b></td></tr>
+<tr><td>-e type</td><td>verd<b>e</b></td><td>verd<b>e</b></td><td>verd<b>i</b></td><td>verd<b>i</b></td></tr></table>
+<p><b>Position:</b> most adjectives go <b>after</b> the noun: <i>il vino rosso</i>, <i>una macchina nuova</i>. A few common ones often go before it: <i>bello, buono, grande, piccolo, nuovo, vecchio</i>, as in <i>una bella giornata</i> (a lovely day) and <i>un piccolo problema</i>.</p>
+<p><b>Mixed groups</b> take the masculine: <i>Marco e Anna sono stanchi</i>. Adjectives ending in -co or -go follow the noun spelling rules: <i>stanco → stanchi</i>, <i>lungo → lunghi</i>.</p>
+<p><b>Molto</b> meaning "very" never changes (<i>molto bello</i>). Meaning "many" it agrees (<i>molti amici</i>, <i>molte volte</i>).</p>`,
+examples:[["il vino rosso","red wine"],["le case grandi","the big houses"],["una bella giornata","a lovely day"],["Siamo stanchi.","We're tired."],["molti amici","many friends"]],
+ex:[
+{t:"fill",q:"la casa ___ (rosso)",a:["rossa"]},
+{t:"fill",q:"i ragazzi ___ (alto)",a:["alti"]},
+{t:"fill",q:"le macchine ___ (nuovo)",a:["nuove"]},
+{t:"fill",q:"le case ___ (grande)",a:["grandi"],why:"-e adjectives have only two forms: -e and -i."},
+{t:"fill",q:"una ragazza ___ (inglese)",a:["inglese"]},
+{t:"fill",q:"una ___ giornata (bello)",a:["bella"]},
+{t:"fill",q:"Marco e Anna sono ___ (stanco)",a:["stanchi"],why:"Mixed groups take the masculine plural. -co becomes -chi."},
+{t:"build",en:"The red wine is good.",a:"Il vino rosso è buono"},
+{t:"build",en:"a small problem",a:"un piccolo problema",extra:["piccola"]}
+]},
+
+{id:"essere", it:"Essere e avere", title:"To be and to have", goal:"Use the two most important verbs and their everyday expressions.",
+notes:`<table><tr><th></th><th>essere (to be)</th><th>avere (to have)</th></tr>
+<tr><td>io</td><td>sono</td><td>ho</td></tr><tr><td>tu</td><td>sei</td><td>hai</td></tr><tr><td>lui / lei / Lei</td><td>è</td><td>ha</td></tr>
+<tr><td>noi</td><td>siamo</td><td>abbiamo</td></tr><tr><td>voi</td><td>siete</td><td>avete</td></tr><tr><td>loro</td><td>sono</td><td>hanno</td></tr></table>
+<p><b>Subject pronouns are usually left out</b>, because the verb ending already shows who is meant: <i>Sono inglese</i> (I'm English). <i>Lei</i> means "she", and with a capital it's also the polite "you".</p>
+<p><b>C'è / ci sono</b> mean "there is / there are": <i>C'è un bar qui vicino?</i> <i>Ci sono due treni.</i></p>
+<p><b>Avere is used where English uses "be":</b> <i>ho fame</i> (I'm hungry), <i>ho sete</i> (thirsty), <i>ho freddo / caldo</i> (cold / hot), <i>ho ragione</i> (I'm right), <i>ho sonno</i> (sleepy), <i>ho quarant'anni</i> (I'm 40), and <i>ho bisogno di…</i> (I need…).</p>`,
+examples:[["Sono inglese.","I'm English."],["Siamo stanchi.","We're tired."],["Ho fame.","I'm hungry."],["Quanti anni hai?","How old are you?"],["C'è un bar qui vicino?","Is there a bar near here?"]],
+ex:[
+{t:"fill",q:"Io ___ inglese. (essere)",a:["sono"]},
+{t:"fill",q:"Noi ___ stanchi. (essere)",a:["siamo"]},
+{t:"fill",q:"Loro ___ due figli. (avere)",a:["hanno"]},
+{t:"fill",q:"Tu ___ fame? (avere)",a:["hai"]},
+{t:"fill",q:"Lei ___ di Roma. (essere)",a:["è"]},
+{t:"fill",q:"Voi ___ ragione. (avere)",a:["avete"]},
+{t:"mc",q:"I'm cold.",o:["Ho freddo.","Sono freddo.","Ho fredda."],a:0,why:"Feeling cold uses avere. <i>Sono freddo</i> would mean you are a cold person."},
+{t:"mc",q:"There are two trains.",o:["Ci sono due treni.","C'è due treni.","Sono due treni."],a:0},
+{t:"build",en:"I'm thirsty.",a:"Ho sete",extra:["sono"]},
+{t:"build",en:"Is there a bar near here?",a:"C'è un bar qui vicino?"}
+]},
+
+{id:"are", it:"Il presente: -are", title:"Present tense: -are verbs", goal:"Conjugate the biggest group of verbs, make negatives and ask questions.",
+notes:`<p>Every verb's infinitive ends in <b>-are</b>, <b>-ere</b> or <b>-ire</b>. Take off the ending and add the one for the person:</p>
+<table><tr><th></th><th>parlare (speak)</th></tr>
+<tr><td>io</td><td>parl<b>o</b></td></tr><tr><td>tu</td><td>parl<b>i</b></td></tr><tr><td>lui / lei</td><td>parl<b>a</b></td></tr>
+<tr><td>noi</td><td>parl<b>iamo</b></td></tr><tr><td>voi</td><td>parl<b>ate</b></td></tr><tr><td>loro</td><td>parl<b>ano</b></td></tr></table>
+<p><b>Negative:</b> put <i>non</i> in front of the verb: <i>Non parlo francese</i>. <b>Questions</b> use the same word order with a rising voice: <i>Parli inglese?</i></p>
+<p><b>Spelling tweaks</b> (the sound stays the same): <i>cercare, pagare</i> add an h before i: <i>cerchi, paghiamo</i>. <i>mangiare, cominciare, studiare</i> don't double the i: <i>mangi, mangiamo</i>.</p>
+<p>The present also covers "I'm doing" and the near future: <i>Domani lavoro</i> (I'm working tomorrow).</p>
+<p><b>Useful -are verbs:</b> abitare (live), lavorare (work), studiare, mangiare, comprare (buy), cercare (look for), pagare (pay), arrivare, ascoltare (listen to), guardare (watch), aspettare (wait for), tornare (return).</p>`,
+examples:[["Parli inglese?","Do you speak English?"],["Non parlo francese.","I don't speak French."],["Abitiamo in Inghilterra.","We live in England."],["Domani lavoro.","I'm working tomorrow."],["Cerchi le chiavi?","Are you looking for the keys?"]],
+ex:[
+{t:"fill",q:"Noi ___ italiano. (parlare)",a:["parliamo"]},
+{t:"fill",q:"Tu ___ a Londra? (abitare)",a:["abiti"]},
+{t:"fill",q:"Loro ___ la TV. (guardare)",a:["guardano"]},
+{t:"fill",q:"Io non ___ oggi. (lavorare)",a:["lavoro"]},
+{t:"fill",q:"Voi ___ il treno. (aspettare)",a:["aspettate"]},
+{t:"fill",q:"Tu ___ le chiavi? (cercare)",a:["cerchi"],why:"Add an h to keep the hard k sound before i."},
+{t:"fill",q:"Noi ___ alle otto. (mangiare)",a:["mangiamo"],why:"mangi + iamo: don't double the i."},
+{t:"mc",q:"Lei ___ con la carta. (pagare)",o:["paga","paghe","pagha"],a:0,why:"An h is only needed before i or e."},
+{t:"build",en:"I don't speak French.",a:"Non parlo francese",extra:["parla"]},
+{t:"build",en:"Are you working tomorrow?",a:"Lavori domani?",extra:["lavora"]}
+]},
+
+{id:"ereire", it:"Il presente: -ere, -ire", title:"Present tense: -ere and -ire verbs", goal:"Conjugate the other two groups, including the -isc- verbs.",
+notes:`<table><tr><th></th><th>prendere (take)</th><th>dormire (sleep)</th><th>capire (understand)</th></tr>
+<tr><td>io</td><td>prend<b>o</b></td><td>dorm<b>o</b></td><td>cap<b>isco</b></td></tr>
+<tr><td>tu</td><td>prend<b>i</b></td><td>dorm<b>i</b></td><td>cap<b>isci</b></td></tr>
+<tr><td>lui / lei</td><td>prend<b>e</b></td><td>dorm<b>e</b></td><td>cap<b>isce</b></td></tr>
+<tr><td>noi</td><td>prend<b>iamo</b></td><td>dorm<b>iamo</b></td><td>cap<b>iamo</b></td></tr>
+<tr><td>voi</td><td>prend<b>ete</b></td><td>dorm<b>ite</b></td><td>cap<b>ite</b></td></tr>
+<tr><td>loro</td><td>prend<b>ono</b></td><td>dorm<b>ono</b></td><td>cap<b>iscono</b></td></tr></table>
+<p><b>-ire verbs come in two types.</b> Some go like <i>dormire</i>: <i>partire</i> (leave), <i>sentire</i> (hear, feel), <i>aprire</i> (open), <i>offrire</i>. Others add <b>-isc-</b> in four of the six forms: <i>capire, finire, preferire, pulire</i> (clean), <i>spedire</i> (send). Learn which type each verb is.</p>
+<p><b>Useful -ere verbs:</b> prendere (take; also "have" food or drink: <i>prendo un caffè</i>), vedere (see), leggere (read), scrivere (write), vivere (live), chiudere (close), credere (believe), vendere (sell), rispondere (answer).</p>
+<p>The spelling stays regular even when the sound changes: <i>leggo</i> (hard g), <i>leggi</i> (soft g).</p>`,
+examples:[["Prendo un caffè.","I'll have a coffee."],["Il treno parte alle nove.","The train leaves at nine."],["Non capisco.","I don't understand."],["Preferiscono il vino rosso.","They prefer red wine."]],
+ex:[
+{t:"fill",q:"Io ___ un caffè. (prendere)",a:["prendo"]},
+{t:"fill",q:"Loro ___ il giornale. (leggere)",a:["leggono"]},
+{t:"fill",q:"Tu ___ bene? (dormire)",a:["dormi"]},
+{t:"fill",q:"Il treno ___ alle nove. (partire)",a:["parte"]},
+{t:"fill",q:"Io non ___. (capire)",a:["capisco"]},
+{t:"fill",q:"Loro ___ il vino rosso. (preferire)",a:["preferiscono"]},
+{t:"fill",q:"Noi ___ alle sei. (finire)",a:["finiamo"],why:"noi and voi never take -isc-."},
+{t:"fill",q:"Voi ___ una lettera. (scrivere)",a:["scrivete"]},
+{t:"mc",q:"Which verb takes -isc-?",o:["finire","dormire","partire"],a:0},
+{t:"build",en:"We live in England.",a:"Viviamo in Inghilterra",extra:["vivono"]}
+]},
+
+{id:"irreg", it:"I verbi irregolari", title:"Key irregular verbs", goal:"Use the everyday irregular verbs in the present.",
+notes:`<p>The most common verbs are irregular. Only four -are verbs are: <i>andare, fare, stare, dare</i>.</p>
+<table><tr><th></th><th>andare (go)</th><th>fare (do, make)</th><th>stare (stay, be)</th><th>venire (come)</th></tr>
+<tr><td>io</td><td>vado</td><td>faccio</td><td>sto</td><td>vengo</td></tr>
+<tr><td>tu</td><td>vai</td><td>fai</td><td>stai</td><td>vieni</td></tr>
+<tr><td>lui / lei</td><td>va</td><td>fa</td><td>sta</td><td>viene</td></tr>
+<tr><td>noi</td><td>andiamo</td><td>facciamo</td><td>stiamo</td><td>veniamo</td></tr>
+<tr><td>voi</td><td>andate</td><td>fate</td><td>state</td><td>venite</td></tr>
+<tr><td>loro</td><td>vanno</td><td>fanno</td><td>stanno</td><td>vengono</td></tr></table>
+<table><tr><th></th><th>dire (say)</th><th>uscire (go out)</th><th>dare (give)</th><th>bere (drink)</th></tr>
+<tr><td>io</td><td>dico</td><td>esco</td><td>do</td><td>bevo</td></tr>
+<tr><td>tu</td><td>dici</td><td>esci</td><td>dai</td><td>bevi</td></tr>
+<tr><td>lui / lei</td><td>dice</td><td>esce</td><td>dà</td><td>beve</td></tr>
+<tr><td>noi</td><td>diciamo</td><td>usciamo</td><td>diamo</td><td>beviamo</td></tr>
+<tr><td>voi</td><td>dite</td><td>uscite</td><td>date</td><td>bevete</td></tr>
+<tr><td>loro</td><td>dicono</td><td>escono</td><td>danno</td><td>bevono</td></tr></table>
+<p><b>Patterns that help:</b> in "boot" verbs the stem changes for io, tu, lui and loro but not for noi and voi (<i>vengo… veniamo, venite</i>). Some verbs add a g in the io and loro forms: <i>vengo, vengono</i>, <i>rimango</i> (I stay), <i>tengo</i> (I hold).</p>
+<p><b>Everyday uses:</b> <i>Come stai?</i> (How are you?) <i>Sto bene.</i> · <i>Fa caldo / freddo</i> (It's hot / cold weather) · <i>fare colazione</i> (have breakfast) · <i>andare a</i> + city, <i>andare in</i> + country or transport.</p>`,
+examples:[["Come stai? Sto bene.","How are you? I'm well."],["Vado a Roma.","I'm going to Rome."],["Che cosa fai stasera?","What are you doing tonight?"],["Fa freddo oggi.","It's cold today."],["Vengo dall'Inghilterra.","I come from England."]],
+ex:[
+{t:"fill",q:"Io ___ a Roma domani. (andare)",a:["vado"]},
+{t:"fill",q:"Che cosa ___ stasera? (tu, fare)",a:["fai"]},
+{t:"fill",q:"Come ___? (Lei, stare)",a:["sta"]},
+{t:"fill",q:"Loro ___ in treno. (venire)",a:["vengono"]},
+{t:"fill",q:"Noi ___ stasera. (uscire)",a:["usciamo"]},
+{t:"fill",q:"Lui ___ sempre la verità. (dire)",a:["dice"]},
+{t:"fill",q:"Voi ___ in vacanza? (andare)",a:["andate"]},
+{t:"fill",q:"Oggi ___ caldo. (fare)",a:["fa"],why:"Weather uses fare: fa caldo, fa freddo, fa bel tempo."},
+{t:"fill",q:"Io ___ dall'Inghilterra. (venire)",a:["vengo"]},
+{t:"mc",q:"loro + fare = ?",o:["fanno","faccono","fano"],a:0}
+]},
+
+{id:"modals", it:"Volere, potere, dovere", title:"Want, can, must", goal:"Say what you want, can and must do, and the difference between sapere and conoscere.",
+notes:`<table><tr><th></th><th>volere (want)</th><th>potere (can)</th><th>dovere (must)</th><th>sapere (know)</th></tr>
+<tr><td>io</td><td>voglio</td><td>posso</td><td>devo</td><td>so</td></tr>
+<tr><td>tu</td><td>vuoi</td><td>puoi</td><td>devi</td><td>sai</td></tr>
+<tr><td>lui / lei</td><td>vuole</td><td>può</td><td>deve</td><td>sa</td></tr>
+<tr><td>noi</td><td>vogliamo</td><td>possiamo</td><td>dobbiamo</td><td>sappiamo</td></tr>
+<tr><td>voi</td><td>volete</td><td>potete</td><td>dovete</td><td>sapete</td></tr>
+<tr><td>loro</td><td>vogliono</td><td>possono</td><td>devono</td><td>sanno</td></tr></table>
+<p>These are followed by an <b>infinitive</b>, as in English: <i>Devo andare</i> (I must go). <i>Posso pagare con la carta?</i> (Can I pay by card?)</p>
+<p><b>Vorrei</b> (I would like) is the polite way to ask for something. <i>Voglio</i> (I want) can sound blunt in a shop.</p>
+<p><b>Two kinds of "know":</b> <i>sapere</i> is for facts and skills (<i>So dov'è</i>, I know where it is; <i>So nuotare</i>, I can swim). <i>conoscere</i> is for people and places (<i>Conosco Marco</i>, <i>Conosci Roma?</i>).</p>`,
+examples:[["Vorrei un caffè, per favore.","I'd like a coffee, please."],["Posso aprire la finestra?","Can I open the window?"],["Devo partire presto.","I have to leave early."],["Non lo so.","I don't know."],["Conosci Marco?","Do you know Marco?"]],
+ex:[
+{t:"fill",q:"___ un caffè, per favore. (I'd like)",a:["vorrei"]},
+{t:"fill",q:"Io ___ andare. (dovere)",a:["devo"]},
+{t:"fill",q:"___ pagare con la carta? (io, potere)",a:["posso"]},
+{t:"fill",q:"Noi ___ partire presto. (dovere)",a:["dobbiamo"]},
+{t:"fill",q:"Loro ___ venire. (volere)",a:["vogliono"]},
+{t:"fill",q:"Tu ___ nuotare? (sapere)",a:["sai"],why:"sapere + infinitive means knowing how to do something."},
+{t:"mc",q:"I know Marco.",o:["Conosco Marco.","So Marco."],a:0,why:"Use conoscere for people and places."},
+{t:"mc",q:"I know where it is.",o:["So dov'è.","Conosco dov'è."],a:0,why:"Use sapere for facts."},
+{t:"build",en:"Can I open the window?",a:"Posso aprire la finestra?",extra:["apro"]}
+]},
+
+{id:"prep", it:"Le preposizioni", title:"Prepositions", goal:"Say where, to and from, and combine prepositions with the article.",
+notes:`<p><b>The main prepositions:</b> <i>di</i> (of; from a city), <i>a</i> (to, at; used with cities), <i>da</i> (from; at someone's place), <i>in</i> (in, to; used with countries, regions and transport), <i>su</i> (on), <i>con</i> (with), <i>per</i> (for), <i>tra / fra</i> (between; in time: <i>tra due ore</i>, in two hours).</p>
+<p>When followed by "the", <b>di, a, da, in, su join the article</b>:</p>
+<div class="tscroll"><table><tr><th></th><th>il</th><th>lo</th><th>l'</th><th>la</th><th>i</th><th>gli</th><th>le</th></tr>
+<tr><td>di</td><td>del</td><td>dello</td><td>dell'</td><td>della</td><td>dei</td><td>degli</td><td>delle</td></tr>
+<tr><td>a</td><td>al</td><td>allo</td><td>all'</td><td>alla</td><td>ai</td><td>agli</td><td>alle</td></tr>
+<tr><td>da</td><td>dal</td><td>dallo</td><td>dall'</td><td>dalla</td><td>dai</td><td>dagli</td><td>dalle</td></tr>
+<tr><td>in</td><td>nel</td><td>nello</td><td>nell'</td><td>nella</td><td>nei</td><td>negli</td><td>nelle</td></tr>
+<tr><td>su</td><td>sul</td><td>sullo</td><td>sull'</td><td>sulla</td><td>sui</td><td>sugli</td><td>sulle</td></tr></table></div>
+<p><b>Patterns to learn as a whole:</b> <i>vado a Roma</i>, <i>vado in Italia</i>, <i>vado in treno</i>, <i>vado al bar</i>, <i>vado dal medico</i> (to the doctor's), <i>sono a casa</i>, <i>sono in ufficio</i>.</p>
+<p><i>Del, della</i> and the rest can also mean "some": <i>Vorrei del pane</i> (I'd like some bread).</p>`,
+examples:[["Vado alla stazione.","I'm going to the station."],["Il libro è sul tavolo.","The book is on the table."],["Vengo da Londra.","I come from London."],["La macchina di mio fratello.","My brother's car."],["Vado dal medico.","I'm going to the doctor's."]],
+ex:[
+{t:"fill",q:"Vado ___ stazione. (to the)",a:["alla"]},
+{t:"fill",q:"Il libro è ___ tavolo. (on the)",a:["sul"]},
+{t:"fill",q:"Abito ___ Inghilterra.",a:["in"],why:"Countries take in."},
+{t:"fill",q:"Vado ___ Roma.",a:["a"],why:"Cities take a."},
+{t:"fill",q:"Vengo ___ Londra.",a:["da"]},
+{t:"fill",q:"Le chiavi sono ___ borsa. (in the)",a:["nella"]},
+{t:"fill",q:"Vado ___ medico. (to the doctor's)",a:["dal"],why:"To someone's place is da: dal medico, da Marco."},
+{t:"fill",q:"la camera ___ albergo (of the)",a:["dell'"]},
+{t:"fill",q:"Vado ___ treno.",a:["in"],why:"Transport takes in: in treno, in macchina, in aereo."},
+{t:"mc",q:"Vado ___ bar.",o:["al","a il","in"],a:0,why:"a + il = al."}
+]},
+
+{id:"poss", it:"I possessivi", title:"My, your, his, her", goal:"Use possessives, including with family members.",
+notes:`<table><tr><th></th><th>m. sing.</th><th>f. sing.</th><th>m. pl.</th><th>f. pl.</th></tr>
+<tr><td>my</td><td>il mio</td><td>la mia</td><td>i miei</td><td>le mie</td></tr>
+<tr><td>your (tu)</td><td>il tuo</td><td>la tua</td><td>i tuoi</td><td>le tue</td></tr>
+<tr><td>his, her, your (Lei)</td><td>il suo</td><td>la sua</td><td>i suoi</td><td>le sue</td></tr>
+<tr><td>our</td><td>il nostro</td><td>la nostra</td><td>i nostri</td><td>le nostre</td></tr>
+<tr><td>your (voi)</td><td>il vostro</td><td>la vostra</td><td>i vostri</td><td>le vostre</td></tr>
+<tr><td>their</td><td>il loro</td><td>la loro</td><td>i loro</td><td>le loro</td></tr></table>
+<p><b>Possessives agree with the thing owned, not the owner.</b> <i>La sua macchina</i> can be his car or her car. The article is normally included: <i>il mio libro</i>, <i>la nostra casa</i>.</p>
+<p><b>Family exception:</b> with a single family member, drop the article: <i>mia madre</i>, <i>mio fratello</i>, <i>sua moglie</i>. Keep it in the plural (<i>i miei fratelli</i>) and always with <i>loro</i> (<i>la loro madre</i>).</p>`,
+examples:[["la mia macchina","my car"],["mia madre","my mother"],["i miei amici","my friends"],["Marco e sua moglie","Marco and his wife"],["la loro casa","their house"]],
+ex:[
+{t:"fill",q:"___ macchina (my)",a:["la mia"]},
+{t:"fill",q:"___ amici (my)",a:["i miei"]},
+{t:"fill",q:"___ madre (my)",a:["mia"],why:"Single family members take no article."},
+{t:"fill",q:"___ fratelli (my)",a:["i miei"],why:"Plural family members keep the article."},
+{t:"fill",q:"___ casa (our)",a:["la nostra"]},
+{t:"fill",q:"Marco e ___ moglie (his wife)",a:["sua"]},
+{t:"fill",q:"___ figli (their)",a:["i loro"]},
+{t:"mc",q:"Anna's car = ___ macchina",o:["la sua","il suo","la lei"],a:0,why:"It agrees with macchina (feminine), not with Anna."},
+{t:"mc",q:"my father",o:["mio padre","il mio padre"],a:0}
+]},
+
+{id:"refl", it:"I verbi riflessivi", title:"Reflexive verbs", goal:"Talk about your daily routine with reflexive verbs.",
+notes:`<p>Some verbs describe something you do to yourself. They take a <b>reflexive pronoun</b> in front of the verb:</p>
+<table><tr><th></th><th>chiamarsi (be called)</th><th>alzarsi (get up)</th></tr>
+<tr><td>io</td><td><b>mi</b> chiamo</td><td><b>mi</b> alzo</td></tr>
+<tr><td>tu</td><td><b>ti</b> chiami</td><td><b>ti</b> alzi</td></tr>
+<tr><td>lui / lei</td><td><b>si</b> chiama</td><td><b>si</b> alza</td></tr>
+<tr><td>noi</td><td><b>ci</b> chiamiamo</td><td><b>ci</b> alziamo</td></tr>
+<tr><td>voi</td><td><b>vi</b> chiamate</td><td><b>vi</b> alzate</td></tr>
+<tr><td>loro</td><td><b>si</b> chiamano</td><td><b>si</b> alzano</td></tr></table>
+<p><b>Common reflexive verbs:</b> svegliarsi (wake up), lavarsi (wash), vestirsi (get dressed), sentirsi (feel), divertirsi (enjoy yourself), riposarsi (rest), sedersi (sit down: <i>mi siedo</i>).</p>
+<p>With an infinitive, the pronoun goes on the end: <i>Domani devo alzarmi presto</i> (I have to get up early tomorrow).</p>`,
+examples:[["Mi chiamo Mark.","My name is Mark."],["Come ti chiami?","What's your name?"],["Mi alzo alle sette.","I get up at seven."],["Come ti senti?","How do you feel?"],["Ci divertiamo molto.","We're having a great time."]],
+ex:[
+{t:"fill",q:"Io ___ alle sette. (alzarsi)",a:["mi alzo"]},
+{t:"fill",q:"Come ___? (tu, chiamarsi)",a:["ti chiami"]},
+{t:"fill",q:"Lei ___ Anna. (chiamarsi)",a:["si chiama"]},
+{t:"fill",q:"Noi ___ molto. (divertirsi)",a:["ci divertiamo"]},
+{t:"fill",q:"Loro ___ tardi. (svegliarsi)",a:["si svegliano"]},
+{t:"fill",q:"Domani devo ___ presto. (alzarsi)",a:["alzarmi"],why:"With an infinitive, the pronoun goes on the end."},
+{t:"mc",q:"How do you feel? (to a friend)",o:["Come ti senti?","Come senti?","Come sentiti?"],a:0},
+{t:"build",en:"My name is Mark.",a:"Mi chiamo Mark",extra:["sono"]}
+]},
+
+{id:"pp1", it:"Il passato prossimo (avere)", title:"The past: passato prossimo with avere", goal:"Say what you did, including with the common irregular past participles.",
+notes:`<p>The <b>passato prossimo</b> is the everyday spoken past. It covers both "I spoke" and "I have spoken". It's made from the present of <b>avere</b> plus a <b>past participle</b>:</p>
+<table><tr><th>Infinitive</th><th>Participle</th><th>Example</th></tr>
+<tr><td>-are</td><td>-ato</td><td>ho parl<b>ato</b></td></tr>
+<tr><td>-ere</td><td>-uto</td><td>ho vend<b>uto</b></td></tr>
+<tr><td>-ire</td><td>-ito</td><td>ho dorm<b>ito</b></td></tr></table>
+<p><b>Common irregular participles</b>, mostly from -ere verbs, are worth learning by heart: fare → <b>fatto</b>, dire → <b>detto</b>, prendere → <b>preso</b>, mettere → <b>messo</b>, vedere → <b>visto</b>, leggere → <b>letto</b>, scrivere → <b>scritto</b>, chiudere → <b>chiuso</b>, aprire → <b>aperto</b>, bere → <b>bevuto</b>, rispondere → <b>risposto</b>, perdere → <b>perso</b>.</p>
+<p><b>Negative:</b> <i>Non ho mangiato.</i> <b>Useful time words:</b> <i>ieri</i> (yesterday), <i>la settimana scorsa</i> (last week), <i>già</i> (already), <i>non… ancora</i> (not yet).</p>`,
+examples:[["Ieri ho lavorato.","Yesterday I worked."],["Hai mangiato?","Have you eaten?"],["Che cosa hai fatto?","What did you do?"],["Ho visto un bel film.","I saw a good film."],["Ho perso il passaporto.","I've lost my passport."]],
+ex:[
+{t:"fill",q:"Ieri ___ con Marco. (io, parlare)",a:["ho parlato"]},
+{t:"fill",q:"Hai ___ la pizza? (mangiare)",a:["mangiato"]},
+{t:"fill",q:"Abbiamo ___ la macchina. (vendere)",a:["venduto"]},
+{t:"fill",q:"Ho ___ bene. (dormire)",a:["dormito"]},
+{t:"fill",q:"Che cosa hai ___? (fare)",a:["fatto"]},
+{t:"fill",q:"Ho ___ un bel film. (vedere)",a:["visto"]},
+{t:"fill",q:"Lei ha ___ una lettera. (scrivere)",a:["scritto"]},
+{t:"fill",q:"Non ho ___ niente. (dire)",a:["detto"]},
+{t:"fill",q:"Hanno ___ il treno. (prendere)",a:["preso"]},
+{t:"build",en:"I've lost my passport.",a:"Ho perso il passaporto",extra:["sono"]}
+]},
+
+{id:"pp2", it:"Il passato prossimo (essere)", title:"The past with essere", goal:"Know which verbs take essere and make the participle agree.",
+notes:`<p><b>Some verbs use essere instead of avere</b>, mainly verbs of movement and change of state:</p>
+<p><i>andare, venire, arrivare, partire, uscire, entrare, tornare, restare / rimanere</i> (rimasto), <i>nascere</i> (nato), <i>morire</i> (morto), <i>diventare</i> (become), <i>stare</i> and <i>essere</i> (both stato), <i>succedere</i> (successo, happen), plus <b>all reflexive verbs</b>.</p>
+<p>With essere, <b>the participle agrees with the subject</b>, like an adjective:</p>
+<table><tr><td>Marco è andat<b>o</b></td><td>Anna è andat<b>a</b></td></tr>
+<tr><td>Siamo andat<b>i</b> (men or mixed)</td><td>Le ragazze sono andat<b>e</b></td></tr></table>
+<p>Reflexive verbs: <i>Mi sono alzato</i> (a man) / <i>Mi sono alzata</i> (a woman).</p>
+<p><b>Quick test:</b> if the verb can take a direct object ("eat <u>something</u>", "see <u>someone</u>"), it uses avere. If it's about going, coming or changing, it's usually essere.</p>`,
+examples:[["Sono andato in Italia.","I went to Italy (said by a man)."],["Anna è arrivata ieri.","Anna arrived yesterday."],["Siamo partiti alle otto.","We left at eight."],["Mi sono alzato alle sei.","I got up at six."],["Che cosa è successo?","What happened?"]],
+ex:[
+{t:"fill",q:"Marco ___ a Roma. (andare)",a:["è andato"]},
+{t:"fill",q:"Anna ___ ieri. (arrivare)",a:["è arrivata"]},
+{t:"fill",q:"Noi ___ alle otto. (partire, men)",a:["siamo partiti"]},
+{t:"fill",q:"Le ragazze ___ tardi. (uscire)",a:["sono uscite"]},
+{t:"fill",q:"Io ___ a casa. (rimanere, a man)",a:["sono rimasto"]},
+{t:"fill",q:"Dove ___? (tu, nascere, a man)",a:["sei nato"]},
+{t:"fill",q:"Stamattina ___ alle sei. (io, alzarsi, a man)",a:["mi sono alzato"]},
+{t:"mc",q:"I went to Italy. (said by a woman)",o:["Sono andata in Italia.","Ho andato in Italia.","Sono andato in Italia."],a:0},
+{t:"mc",q:"Which of these uses avere in the past?",o:["mangiare","andare","arrivare"],a:0},
+{t:"build",en:"We arrived yesterday.",a:"Siamo arrivati ieri",extra:["abbiamo"]}
+]},
+
+{id:"objpron", it:"I pronomi", title:"Object pronouns: it, him, her, them", goal:"Replace nouns with pronouns and put them in the right place.",
+notes:`<table><tr><th>Direct (him, it…)</th><th>Indirect (to him…)</th></tr>
+<tr><td>mi (me)</td><td>mi (to me)</td></tr><tr><td>ti (you)</td><td>ti (to you)</td></tr>
+<tr><td>lo (him, it m.)</td><td>gli (to him)</td></tr><tr><td>la (her, it f.; La = polite you)</td><td>le (to her; Le = to you, polite)</td></tr>
+<tr><td>ci (us)</td><td>ci (to us)</td></tr><tr><td>vi (you pl.)</td><td>vi (to you pl.)</td></tr>
+<tr><td>li (them m.), le (them f.)</td><td>gli (to them)</td></tr></table>
+<p><b>Position:</b> before a conjugated verb: <i>Lo vedo</i> (I see him / it), <i>Non la conosco</i>. With an infinitive they can go on the end: <i>Voglio vederlo</i> or <i>Lo voglio vedere</i>, both correct.</p>
+<p><b>In the past,</b> lo and la shorten to l', and the participle agrees with lo, la, li or le: <i>La pizza? L'ho mangiata.</i> <i>I biglietti? Li ho comprati.</i></p>
+<p><b>Piacere</b> works "backwards": <i>Mi piace il vino</i> means "wine pleases me", so I like wine. With a plural thing it's <i>mi piacciono</i>: <i>Mi piacciono i gatti</i>.</p>`,
+examples:[["Il libro? Lo leggo stasera.","The book? I'll read it tonight."],["Non la conosco.","I don't know her."],["L'ho mangiata.","I ate it (the pizza)."],["Mi piace il caffè.","I like coffee."],["Gli telefono domani.","I'll phone him tomorrow."]],
+ex:[
+{t:"fill",q:"Il libro? ___ leggo stasera.",a:["lo"]},
+{t:"fill",q:"La pizza? ___ mangio subito.",a:["la"]},
+{t:"fill",q:"I biglietti? ___ compro io.",a:["li"]},
+{t:"fill",q:"Le chiavi? Non ___ trovo.",a:["le"]},
+{t:"fill",q:"Anna? Non ___ conosco.",a:["la"]},
+{t:"mc",q:"I want to see him.",o:["Voglio vederlo.","Voglio lo vedere.","Voglio vedere lo."],a:0},
+{t:"mc",q:"The pizza? I ate it.",o:["L'ho mangiata.","L'ho mangiato.","La ho mangiato."],a:0,why:"la becomes l', and the participle agrees with it: mangiata."},
+{t:"fill",q:"___ piace il vino. (I like)",a:["mi"]},
+{t:"fill",q:"Ad Anna ___ piace il caffè. (to her)",a:["le"]},
+{t:"mc",q:"I like cats.",o:["Mi piacciono i gatti.","Mi piace i gatti.","Io piaccio i gatti."],a:0}
+]},
+
+{id:"impf", it:"L'imperfetto", title:"The imperfect: used to, was doing", goal:"Describe the past and choose between imperfetto and passato prossimo.",
+notes:`<p>The <b>imperfetto</b> is used for <b>background, habits and descriptions</b> in the past: "I used to…", "I was …-ing", "it was…". It's very regular: drop the final -re and add <b>-vo, -vi, -va, -vamo, -vate, -vano</b>.</p>
+<table><tr><th></th><th>parlare</th><th>prendere</th><th>dormire</th><th>essere</th></tr>
+<tr><td>io</td><td>parlavo</td><td>prendevo</td><td>dormivo</td><td>ero</td></tr>
+<tr><td>tu</td><td>parlavi</td><td>prendevi</td><td>dormivi</td><td>eri</td></tr>
+<tr><td>lui / lei</td><td>parlava</td><td>prendeva</td><td>dormiva</td><td>era</td></tr>
+<tr><td>noi</td><td>parlavamo</td><td>prendevamo</td><td>dormivamo</td><td>eravamo</td></tr>
+<tr><td>voi</td><td>parlavate</td><td>prendevate</td><td>dormivate</td><td>eravate</td></tr>
+<tr><td>loro</td><td>parlavano</td><td>prendevano</td><td>dormivano</td><td>erano</td></tr></table>
+<p>Only a few are irregular: <i>essere</i> (ero), <i>fare</i> (facevo), <i>dire</i> (dicevo), <i>bere</i> (bevevo).</p>
+<p><b>Which past?</b> The <b>passato prossimo</b> is for completed events ("then this happened"). The <b>imperfetto</b> is for the scene around them:</p>
+<ul><li><i>Mentre <b>mangiavo</b>, <b>è arrivato</b> Marco.</i> While I was eating (background), Marco arrived (event).</li>
+<li><i>Da bambino <b>giocavo</b> a calcio.</i> As a child I used to play football (habit).</li>
+<li><i><b>Era</b> una bella giornata.</i> It was a lovely day (description).</li></ul>`,
+examples:[["Da bambino giocavo a calcio.","As a child I used to play football."],["Era una bella giornata.","It was a lovely day."],["Mentre mangiavo, è arrivato Marco.","While I was eating, Marco arrived."],["Faceva freddo.","It was cold."]],
+ex:[
+{t:"fill",q:"Da bambino ___ a calcio. (giocare)",a:["giocavo"]},
+{t:"fill",q:"Quando ero giovane, ___ a Londra. (abitare)",a:["abitavo"]},
+{t:"fill",q:"Ieri ___ freddo. (fare)",a:["faceva"]},
+{t:"fill",q:"La casa ___ grande. (essere)",a:["era"]},
+{t:"fill",q:"Noi ___ la TV. (guardare)",a:["guardavamo"]},
+{t:"fill",q:"Loro ___ sempre fino a tardi. (dormire)",a:["dormivano"]},
+{t:"fill",q:"Tu ___ stanco ieri sera. (essere)",a:["eri"]},
+{t:"mc",q:"While I was eating, Marco arrived.",o:["Mentre mangiavo, è arrivato Marco.","Mentre ho mangiato, arrivava Marco."],a:0,why:"Background → imperfetto. The event → passato prossimo."},
+{t:"mc",q:"Yesterday I ate at eight. (one completed event)",o:["Ieri ho mangiato alle otto.","Ieri mangiavo alle otto."],a:0}
+]},
+
+{id:"fut", it:"Futuro e condizionale", title:"Future and conditional", goal:"Say what will happen and what would happen, and ask politely.",
+notes:`<p>Both are built on the infinitive. -are verbs change the a to e: <i>parlare → parler-</i>, <i>prendere → prender-</i>, <i>dormire → dormir-</i>.</p>
+<table><tr><th></th><th>Future (will)</th><th>Conditional (would)</th></tr>
+<tr><td>io</td><td>parler<b>ò</b></td><td>parler<b>ei</b></td></tr>
+<tr><td>tu</td><td>parler<b>ai</b></td><td>parler<b>esti</b></td></tr>
+<tr><td>lui / lei</td><td>parler<b>à</b></td><td>parler<b>ebbe</b></td></tr>
+<tr><td>noi</td><td>parler<b>emo</b></td><td>parler<b>emmo</b></td></tr>
+<tr><td>voi</td><td>parler<b>ete</b></td><td>parler<b>este</b></td></tr>
+<tr><td>loro</td><td>parler<b>anno</b></td><td>parler<b>ebbero</b></td></tr></table>
+<p><b>Shortened stems</b> (the same ones for both tenses): essere <b>sar-</b>, avere <b>avr-</b>, andare <b>andr-</b>, fare <b>far-</b>, stare <b>star-</b>, dare <b>dar-</b>, venire <b>verr-</b>, volere <b>vorr-</b>, potere <b>potr-</b>, dovere <b>dovr-</b>, sapere <b>sapr-</b>, vedere <b>vedr-</b>, vivere <b>vivr-</b>, bere <b>berr-</b>, rimanere <b>rimarr-</b>.</p>
+<p><b>Spelling:</b> <i>cercherò, pagherò</i> (h keeps the hard sound) and <i>mangerò, comincerò</i> (the i drops).</p>
+<p><b>Uses:</b> the conditional makes requests polite (<i>Vorrei…</i>, <i>Potrebbe aiutarmi?</i>) and says "would" or "should" (<i>Dovremmo partire</i>, We should leave). In conversation, the near future is often just the present: <i>Domani vado a Roma</i>.</p>`,
+examples:[["Domani andrò a Roma.","Tomorrow I'll go to Rome."],["Vorrei un tavolo per due.","I'd like a table for two."],["Potrebbe aiutarmi?","Could you help me?"],["Farà bel tempo.","The weather will be fine."],["Dovremmo partire.","We should leave."]],
+ex:[
+{t:"fill",q:"Domani ___ a Roma. (io, andare: future)",a:["andrò"]},
+{t:"fill",q:"L'anno prossimo ___ in Italia. (noi, vivere: future)",a:["vivremo"]},
+{t:"fill",q:"___ un caffè, per favore. (io, volere: conditional)",a:["vorrei"]},
+{t:"fill",q:"Mi ___ aiutare? (Lei, potere: conditional)",a:["potrebbe"]},
+{t:"fill",q:"Loro ___ domani. (arrivare: future)",a:["arriveranno"]},
+{t:"fill",q:"Tu ___ tempo stasera? (avere: future)",a:["avrai"]},
+{t:"fill",q:"Io ___ una casa al mare. (comprare: conditional)",a:["comprerei"]},
+{t:"fill",q:"Domani ___ bel tempo. (fare: future)",a:["farà"]},
+{t:"fill",q:"Noi ___ partire. (dovere: conditional, should)",a:["dovremmo"]},
+{t:"mc",q:"Future of mangiare (io)?",o:["mangerò","mangiarò","mangierò"],a:0}
+]},
+
+{id:"imper", it:"L'imperativo", title:"Commands and polite requests", goal:"Tell someone what to do, informally and politely.",
+notes:`<table><tr><th></th><th>-are: guardare</th><th>-ere: prendere</th><th>-ire: sentire</th></tr>
+<tr><td>tu</td><td>guard<b>a</b>!</td><td>prend<b>i</b>!</td><td>sent<b>i</b>!</td></tr>
+<tr><td>Lei (polite)</td><td>guard<b>i</b>!</td><td>prend<b>a</b>!</td><td>sent<b>a</b>!</td></tr>
+<tr><td>noi (let's)</td><td>guardiamo!</td><td>prendiamo!</td><td>sentiamo!</td></tr>
+<tr><td>voi</td><td>guardate!</td><td>prendete!</td><td>sentite!</td></tr></table>
+<p>The <b>polite Lei form swaps the vowel</b>: -are verbs end in -i, -ere and -ire verbs end in -a. That's why you'll hear <i>Scusi!</i> (excuse me) and <i>Senta!</i> (listen / excuse me) from strangers, and <i>Scusa!</i> and <i>Senti!</i> from friends.</p>
+<p><b>Negative tu:</b> <i>non</i> + infinitive: <i>Non parlare!</i> <i>Non toccare!</i> The other forms just add <i>non</i>: <i>Non parlate!</i></p>
+<p><b>Irregular forms:</b> tu: <i>va'</i> / <i>vai</i>, <i>fa'</i> / <i>fai</i>, <i>sta'</i> / <i>stai</i>, <i>da'</i> / <i>dai</i>, <i>di'</i> · Lei: <i>vada, faccia, stia, dia, dica, venga</i>.</p>
+<p>Pronouns join the end of the tu, noi and voi forms (<i>Guardalo!</i>, <i>Scusami!</i>) but go in front of Lei forms (<i>Mi scusi!</i>, <i>Mi dica!</i>).</p>`,
+examples:[["Scusi, dov'è la stazione?","Excuse me, where's the station?"],["Mi dica!","Can I help you? (literally: tell me)"],["Andiamo!","Let's go!"],["Non toccare!","Don't touch!"],["Prenda la seconda a destra.","Take the second on the right."]],
+ex:[
+{t:"fill",q:"___! (tu, guardare)",a:["guarda"]},
+{t:"fill",q:"___ il treno! (tu, prendere)",a:["prendi"]},
+{t:"fill",q:"___, dov'è la stazione? (Lei, scusare)",a:["scusi"]},
+{t:"fill",q:"Non ___! (tu, parlare)",a:["parlare"],why:"Negative tu is non + infinitive."},
+{t:"fill",q:"___! Siamo in ritardo. (noi, andare)",a:["andiamo"]},
+{t:"fill",q:"Prego, ___! (Lei, entrare)",a:["entri"]},
+{t:"fill",q:"___! (voi, ascoltare)",a:["ascoltate"]},
+{t:"mc",q:"Polite, to a shop assistant: \"Tell me\" (Can I help you?)",o:["Mi dica!","Dimmi!","Dica mi!"],a:0},
+{t:"mc",q:"Informal, to one friend: \"Listen!\"",o:["Senti!","Senta!","Sentite!"],a:0,why:"Senta is the polite form. Sentite is for more than one person."}
+]},
+
+{id:"subj", it:"Il congiuntivo", title:"The subjunctive", goal:"Recognise and use the present subjunctive after opinions and wishes.",
+notes:`<p>The <b>congiuntivo</b> is used after <i>che</i> when the main verb expresses an <b>opinion, wish, hope, doubt, feeling or need</b>: <i>penso che, credo che, spero che, voglio che, è importante che, bisogna che, sono contento che</i>.</p>
+<p>It's <b>not</b> used for facts: <i>So che è qui</i> (I know he's here), <i>È vero che…</i></p>
+<table><tr><th>(che…)</th><th>parlare</th><th>prendere</th><th>capire</th></tr>
+<tr><td>io, tu, lui / lei</td><td>parl<b>i</b></td><td>prend<b>a</b></td><td>cap<b>isca</b></td></tr>
+<tr><td>noi</td><td>parl<b>iamo</b></td><td>prend<b>iamo</b></td><td>cap<b>iamo</b></td></tr>
+<tr><td>voi</td><td>parl<b>iate</b></td><td>prend<b>iate</b></td><td>cap<b>iate</b></td></tr>
+<tr><td>loro</td><td>parl<b>ino</b></td><td>prend<b>ano</b></td><td>cap<b>iscano</b></td></tr></table>
+<p><b>Irregular (io, tu, lui / lei form):</b> essere <b>sia</b>, avere <b>abbia</b>, andare <b>vada</b>, fare <b>faccia</b>, potere <b>possa</b>, volere <b>voglia</b>, dovere <b>debba</b>, sapere <b>sappia</b>, stare <b>stia</b>, dare <b>dia</b>, venire <b>venga</b>, dire <b>dica</b>, uscire <b>esca</b>.</p>
+<p><b>Same subject in both halves?</b> Then use <i>di</i> + infinitive instead: <i>Penso di partire domani</i> (I think I'll leave tomorrow), not <i>penso che io parta</i>.</p>`,
+examples:[["Penso che sia vero.","I think it's true."],["Spero che tu stia bene.","I hope you're well."],["Voglio che tu venga.","I want you to come."],["È importante che capiscano.","It's important that they understand."],["So che è qui.","I know he's here."]],
+ex:[
+{t:"fill",q:"Penso che Marco ___ ragione. (avere)",a:["abbia"]},
+{t:"fill",q:"Spero che tu ___ bene. (stare)",a:["stia"]},
+{t:"fill",q:"Credo che ___ vero. (essere)",a:["sia"]},
+{t:"fill",q:"Voglio che voi ___ presto. (venire)",a:["veniate"]},
+{t:"fill",q:"È importante che loro ___. (capire)",a:["capiscano"]},
+{t:"fill",q:"Penso che il treno ___ alle nove. (partire)",a:["parta"]},
+{t:"fill",q:"Spero che domani ___ bel tempo. (fare)",a:["faccia"]},
+{t:"mc",q:"I know that he is here.",o:["So che è qui.","So che sia qui."],a:0,why:"Facts take the normal present, not the subjunctive."},
+{t:"mc",q:"I think I'll leave tomorrow.",o:["Penso di partire domani.","Penso che io parta domani."],a:0,why:"Same subject → di + infinitive."}
+]}
+];
+
+</script>
+<script>
+/* Quaderno Italiano: verbs and the conjugation engine.
+   Regular forms are generated by rule; irregular ones are listed in full or as overrides.
+   Fields: en, aux ("avere"|"essere"), pp (irregular participle), isc (-isc- verb),
+           pres (6 present forms), fut (future/conditional stem), impf (imperfetto stem or 6 forms) */
+const VERB_DB = {
+  // Regular -are
+  parlare:{en:"to speak"}, lavorare:{en:"to work"}, abitare:{en:"to live (reside)"}, mangiare:{en:"to eat"},
+  cercare:{en:"to look for"}, pagare:{en:"to pay"}, comprare:{en:"to buy"}, studiare:{en:"to study"},
+  arrivare:{en:"to arrive",aux:"essere"}, tornare:{en:"to return",aux:"essere"},
+  // Regular -ere (some with irregular participles)
+  vendere:{en:"to sell"}, credere:{en:"to believe"}, prendere:{en:"to take",pp:"preso"},
+  vivere:{en:"to live",pp:"vissuto",fut:"vivr"}, leggere:{en:"to read",pp:"letto"},
+  scrivere:{en:"to write",pp:"scritto"}, chiudere:{en:"to close",pp:"chiuso"},
+  vedere:{en:"to see",pp:"visto",fut:"vedr"}, perdere:{en:"to lose",pp:"perso"},
+  // Regular -ire
+  dormire:{en:"to sleep"}, partire:{en:"to leave",aux:"essere"}, sentire:{en:"to hear, feel"},
+  aprire:{en:"to open",pp:"aperto"}, capire:{en:"to understand",isc:true}, finire:{en:"to finish",isc:true},
+  preferire:{en:"to prefer",isc:true},
+  // Irregular
+  essere:{en:"to be",aux:"essere",pp:"stato",pres:["sono","sei","è","siamo","siete","sono"],fut:"sar",impf:["ero","eri","era","eravamo","eravate","erano"]},
+  avere:{en:"to have",pres:["ho","hai","ha","abbiamo","avete","hanno"],fut:"avr"},
+  andare:{en:"to go",aux:"essere",pres:["vado","vai","va","andiamo","andate","vanno"],fut:"andr"},
+  fare:{en:"to do, make",pp:"fatto",pres:["faccio","fai","fa","facciamo","fate","fanno"],fut:"far",impf:"face"},
+  stare:{en:"to stay, be",aux:"essere",pp:"stato",pres:["sto","stai","sta","stiamo","state","stanno"],fut:"star"},
+  dare:{en:"to give",pres:["do","dai","dà","diamo","date","danno"],fut:"dar"},
+  dire:{en:"to say",pp:"detto",pres:["dico","dici","dice","diciamo","dite","dicono"],fut:"dir",impf:"dice"},
+  venire:{en:"to come",aux:"essere",pp:"venuto",pres:["vengo","vieni","viene","veniamo","venite","vengono"],fut:"verr"},
+  uscire:{en:"to go out",aux:"essere",pres:["esco","esci","esce","usciamo","uscite","escono"]},
+  volere:{en:"to want",pres:["voglio","vuoi","vuole","vogliamo","volete","vogliono"],fut:"vorr"},
+  potere:{en:"to be able, can",pres:["posso","puoi","può","possiamo","potete","possono"],fut:"potr"},
+  dovere:{en:"to have to, must",pres:["devo","devi","deve","dobbiamo","dovete","devono"],fut:"dovr"},
+  sapere:{en:"to know (facts)",pres:["so","sai","sa","sappiamo","sapete","sanno"],fut:"sapr"},
+  bere:{en:"to drink",pp:"bevuto",pres:["bevo","bevi","beve","beviamo","bevete","bevono"],fut:"berr",impf:"beve"},
+  rimanere:{en:"to stay, remain",aux:"essere",pp:"rimasto",pres:["rimango","rimani","rimane","rimaniamo","rimanete","rimangono"],fut:"rimarr"}
+};
+const IRREGULAR = ["essere","avere","andare","fare","stare","dare","dire","venire","uscire","volere","potere","dovere","sapere","bere","rimanere"];
+const TENSES = {presente:"Present", passato:"Passato prossimo", imperfetto:"Imperfetto", futuro:"Future", condizionale:"Conditional"};
+const PERSONS = ["io","tu","lui / lei","noi","voi","loro"];
+
+function vClass(inf){return inf.slice(-3)}            // are | ere | ire
+function vStem(inf){return inf.slice(0,-3)}
+function joinStem(stem, end, cls){
+  // -care/-gare keep the hard sound: cerc + i → cerchi
+  if(cls==="are" && /[cg]$/.test(stem) && /^[ie]/.test(end)) return stem+"h"+end;
+  // mangi + iamo → mangiamo, studi + i → studi
+  if(/i$/.test(stem) && /^i/.test(end)) return stem+end.slice(1);
+  return stem+end;
+}
+function presente(inf){
+  const v=VERB_DB[inf]; if(v.pres) return v.pres.slice();
+  const cls=vClass(inf), st=vStem(inf);
+  const E = v.isc ? ["isco","isci","isce","iamo","ite","iscono"]
+          : {are:["o","i","a","iamo","ate","ano"], ere:["o","i","e","iamo","ete","ono"], ire:["o","i","e","iamo","ite","ono"]}[cls];
+  return E.map(e=>joinStem(st,e,cls));
+}
+function imperfetto(inf){
+  const v=VERB_DB[inf]; if(Array.isArray(v.impf)) return v.impf.slice();
+  const base = v.impf || inf.slice(0,-2);                 // parla-, vende-, dormi-
+  return ["vo","vi","va","vamo","vate","vano"].map(e=>base+e);
+}
+function futStem(inf){
+  const v=VERB_DB[inf]; if(v.fut) return v.fut;
+  const cls=vClass(inf); let st=vStem(inf);
+  if(cls==="are"){
+    if(/[cg]i$/.test(st)) st=st.slice(0,-1);              // mangi → mang (mangerò)
+    else if(/[cg]$/.test(st)) st+="h";                     // cerc → cerch (cercherò)
+    return st+"er";
+  }
+  return st+(cls==="ere"?"er":"ir");
+}
+function futuro(inf){const s=futStem(inf);return ["ò","ai","à","emo","ete","anno"].map(e=>s+e)}
+function condizionale(inf){const s=futStem(inf);return ["ei","esti","ebbe","emmo","este","ebbero"].map(e=>s+e)}
+function participle(inf){
+  const v=VERB_DB[inf]; if(v.pp) return v.pp;
+  return vStem(inf)+{are:"ato",ere:"uto",ire:"ito"}[vClass(inf)];
+}
+function auxOf(inf){return VERB_DB[inf].aux||"avere"}
+/* Passato prossimo. Returns, for each person, a list of accepted answers (first one is shown).
+   With essere the participle agrees: -o/-a in the singular, -i/-e in the plural. */
+function passato(inf){
+  const pp=participle(inf), aux=auxOf(inf);
+  if(aux==="avere") return ["ho","hai","ha","abbiamo","avete","hanno"].map(a=>[a+" "+pp]);
+  const base=pp.slice(0,-1), A=["sono","sei","è","siamo","siete","sono"];
+  return A.map((a,i)=>i<3?[a+" "+base+"o",a+" "+base+"a"]:[a+" "+base+"i",a+" "+base+"e"]);
+}
+function conjugate(inf,tense){
+  if(tense==="passato") return passato(inf);
+  const f={presente,imperfetto,futuro,condizionale}[tense](inf);
+  return f.map(x=>[x]);
+}
+
+</script>
+<script>
+const APP_VERSION="2.0";
 const DECKS = {
  "Basics":[["ciao","hi / bye"],["buongiorno","good morning"],["buonasera","good evening"],["buonanotte","good night"],["arrivederci","goodbye"],["per favore","please"],["grazie","thank you"],["prego","you're welcome"],["scusi","excuse me (formal)"],["sì","yes"],["mi dispiace","I'm sorry"],["va bene","okay / all right"],["piacere","nice to meet you"],["benvenuto","welcome"],["non lo so","I don't know"]],
  "Numbers":[["uno","one"],["due","two"],["tre","three"],["quattro","four"],["cinque","five"],["sei","six"],["sette","seven"],["otto","eight"],["nove","nine"],["dieci","ten"],["venti","twenty"],["cinquanta","fifty"],["cento","one hundred"],["mille","one thousand"]],
@@ -229,21 +851,6 @@ const DECKS = {
  "Colours":[["rosso","red"],["blu","blue"],["verde","green"],["giallo","yellow"],["bianco","white"],["nero","black"],["grigio","grey"],["arancione","orange"],["rosa","pink"],["marrone","brown"]],
  "Home":[["la casa","house / home"],["la porta","door"],["la finestra","window"],["la cucina","kitchen"],["il bagno","bathroom"],["il letto","bed"],["la tavola","table (dining)"],["la sedia","chair"],["il giardino","garden"],["le scale","stairs"]]
 };
-const VERBS = {
- essere:["to be","sono","sei","è","siamo","siete","sono"],
- avere:["to have","ho","hai","ha","abbiamo","avete","hanno"],
- andare:["to go","vado","vai","va","andiamo","andate","vanno"],
- fare:["to do / make","faccio","fai","fa","facciamo","fate","fanno"],
- parlare:["to speak","parlo","parli","parla","parliamo","parlate","parlano"],
- mangiare:["to eat","mangio","mangi","mangia","mangiamo","mangiate","mangiano"],
- vivere:["to live","vivo","vivi","vive","viviamo","vivete","vivono"],
- dormire:["to sleep","dormo","dormi","dorme","dormiamo","dormite","dormono"],
- capire:["to understand","capisco","capisci","capisce","capiamo","capite","capiscono"],
- volere:["to want","voglio","vuoi","vuole","vogliamo","volete","vogliono"],
- potere:["to be able","posso","puoi","può","possiamo","potete","possono"],
- venire:["to come","vengo","vieni","viene","veniamo","venite","vengono"]
-};
-const PRONOUNS=["io","tu","lui / lei","noi","voi","loro"];
 const PHRASES = {
  "Al bar":[["Un caffè, per favore.","oon kahf-FEH, pehr fah-VOH-reh","A coffee, please."],["Quanto costa?","KWAHN-toh KOH-stah","How much is it?"],["Il conto, per favore.","eel KOHN-toh, pehr fah-VOH-reh","The bill, please."],["Vorrei un bicchiere d'acqua.","vohr-RAY oon beek-KYEH-reh DAHK-kwah","I'd like a glass of water."],["Posso pagare con la carta?","POHS-soh pah-GAH-reh kohn lah KAHR-tah","Can I pay by card?"]],
  "In giro":[["Dov'è la stazione?","doh-VEH lah stah-TSYOH-neh","Where is the station?"],["A che ora parte il treno?","ah keh OH-rah PAHR-teh eel TREH-noh","What time does the train leave?"],["Un biglietto per Roma, per favore.","oon bee-LYEHT-toh pehr ROH-mah","A ticket to Rome, please."],["È lontano?","eh lohn-TAH-noh","Is it far?"],["Mi può aiutare?","mee pwoh ah-yoo-TAH-reh","Can you help me?"]],
@@ -252,11 +859,16 @@ const PHRASES = {
 };
 
 /* ---------- storage ----------
-   words: { italian: [box 0–5, lastPractisedMs] }   best: [score, ms]   verbs: { verb: [best of 6, ms] }
-   days: ["YYYY-MM-DD"]   resetAt: ms (anything older is ignored when merging) */
+   words: { italian: [box 0–5, lastPractisedMs] }   best: [score, ms]   verbs: { "verb|tense": [best of 6, ms] }
+   lessons: { id: [best %, ms] }   days: ["YYYY-MM-DD"]   resetAt: ms (anything older is ignored when merging) */
 const KEY="quaderno-italiano";
-let S={words:{},best:null,verbs:{},days:[],resetAt:0,deck:"Basics",quizDir:"it",quizDeck:"All",lastSent:null,lastGot:null};
+let S={words:{},best:null,verbs:{},lessons:{},days:[],resetAt:0,deck:"Basics",quizDir:"it",quizDeck:"All",vTense:"presente",lastSent:null,lastGot:null};
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
+if(!S.lessons)S.lessons={};
+// v1 stored verb scores by verb only (present tense)
+for(const k of Object.keys(S.verbs)){if(k.indexOf("|")<0){S.verbs[k+"|presente"]=S.verbs[k];delete S.verbs[k]}}
+const PASS=80; // % needed to count a lesson as done
+function lessonsDone(){return COURSE.filter(l=>S.lessons[l.id]&&S.lessons[l.id][0]>=PASS).length}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function box(it){return S.words[it]?S.words[it][0]:0}
 function setBox(it,b){S.words[it]=[b,Date.now()]}
@@ -268,7 +880,7 @@ function learnedCount(){return Object.values(S.words).filter(w=>w[0]>=3).length}
 function renderStats(){
   document.getElementById("st-learned").textContent=learnedCount();
   document.getElementById("st-streak").textContent=streak();
-  document.getElementById("st-best").textContent=S.best==null?"–":S.best[0]+"/10";
+  document.getElementById("st-lessons").textContent=lessonsDone()+"/"+COURSE.length;
 }
 
 /* ---------- speech ---------- */
@@ -289,13 +901,147 @@ function toast(msg,ms){const t=document.createElement("div");t.className="toast"
   setTimeout(()=>t.classList.add("hide"),ms||2800);setTimeout(()=>t.remove(),(ms||2800)+600)}
 
 /* ---------- tabs ---------- */
-let currentTab="cards";
+let currentTab="course";
+const TABS=["course","verbs","cards","quiz","phrases","sync"];
 document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
   currentTab=b.dataset.tab;
   document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));
-  ["cards","quiz","verbs","phrases","sync"].forEach(t=>document.getElementById("tab-"+t).hidden=t!==currentTab);
+  TABS.forEach(t=>document.getElementById("tab-"+t).hidden=t!==currentTab);
   applyUpdateIfSafe();
 }));
+function normAns(s){return String(s).toLowerCase().replace(/[’`´]/g,"'").replace(/[.!?¿¡,;:]/g,"").replace(/\s+/g," ").replace(/\s*'\s*/g,"'").trim()}
+/* right | near (only accents differ) | wrong */
+function judge(given,accepted){
+  const g=normAns(given);if(!g)return{res:"wrong",best:accepted[0]};
+  for(const a of accepted)if(normAns(a)===g)return{res:"right",best:a};
+  for(const a of accepted)if(strip(normAns(a))===strip(g))return{res:"near",best:a};
+  return{res:"wrong",best:accepted[0]};
+}
+function toTop(){window.scrollTo({top:0,behavior:"instant"in window?"instant":"auto"})}
+
+/* ---------- course ---------- */
+const CO=document.getElementById("tab-course");
+let lessonView=null; // null = list; {i, mode:"notes"|"practise"|"result"}
+let run=null;        // practice run: {queue, pos, firstTry, answered, ...}
+function lessonStatus(l){const s=S.lessons[l.id];if(!s)return`<span class="pill">Not started</span>`;
+  return s[0]>=PASS?`<span class="pill done">Done · ${s[0]}%</span>`:`<span class="pill part">${s[0]}% · practise again</span>`}
+function nextLessonIndex(){const i=COURSE.findIndex(l=>!(S.lessons[l.id]&&S.lessons[l.id][0]>=PASS));return i<0?null:i}
+function renderCourse(){
+  if(lessonView)return renderLesson();
+  const done=lessonsDone(),ni=nextLessonIndex();
+  const next=ni==null?`<div class="nextup"><div><span class="label">Course complete</span><b>Bravissimo!</b><p>Every lesson is done. Revisit any of them below, or keep the verbs going in Verbs.</p></div></div>`
+    :`<div class="nextup"><div><span class="label">${done?"Next up":"Start here"} · Lesson ${ni+1}</span><b>${esc(COURSE[ni].title)}</b><p>${esc(COURSE[ni].goal)}</p></div><button class="btn" data-open="${ni}">${S.lessons[COURSE[ni].id]?"Continue":"Start"} →</button></div>`;
+  CO.innerHTML=`<div class="course-head"><h2>Your course</h2><span class="label">${done} of ${COURSE.length} lessons done</span></div>
+   <div class="progressbar" style="margin-top:10px"><span style="width:${done/COURSE.length*100}%"></span></div>
+   ${next}
+   <p class="label">All lessons, in order. Score ${PASS}% or more to complete one.</p>
+   <ol class="lessons">${COURSE.map((l,i)=>`<li><button data-open="${i}"><span class="n">${String(i+1).padStart(2,"0")}</span><span class="t"><b>${esc(l.it)}</b><span>${esc(l.title)}</span></span>${lessonStatus(l)}</button></li>`).join("")}</ol>`;
+}
+function renderLesson(){
+  const l=COURSE[lessonView.i];
+  if(lessonView.mode==="notes"){
+    CO.innerHTML=`<button class="backlink" data-back>← All lessons</button>
+    <div class="lesson"><span class="label">Lesson ${lessonView.i+1} of ${COURSE.length}</span><h2>${esc(l.it)}</h2>
+    <p class="goal">${esc(l.title)}. ${esc(l.goal)}</p>
+    <div class="notes">${l.notes}</div>
+    <p class="label" style="margin-top:20px">Examples. Tap to hear them.</p>
+    <div class="examples">${l.examples.map(([it,en])=>`<div class="phrase">${spkBtn(it)}<div class="txt"><div class="it">${esc(it)}</div><div class="en">${esc(en)}</div></div></div>`).join("")}</div>
+    <div class="ex-actions" style="justify-content:flex-start"><button class="btn primary" data-practise>Practise: ${l.ex.length} exercises →</button></div></div>`;
+  }else if(lessonView.mode==="practise")renderExercise();
+  else renderResult();
+}
+function startPractice(){
+  const l=COURSE[lessonView.i];
+  run={queue:shuffle(l.ex.map((e,k)=>({e,k,review:false}))),pos:0,firstTry:{},answered:false,tiles:null,chosen:null,total:l.ex.length};
+  lessonView.mode="practise";renderLesson();toTop();
+}
+function fillSentence(e,ans){return e.q.replace(/\s*\([^)]*\)\s*$/,"").replace(/\s*\([^)]*\)/g,"").replace("___",ans).replace(/<[^>]+>/g,"")}
+function renderExercise(){
+  const l=COURSE[lessonView.i],item=run.queue[run.pos],e=item.e;
+  const head=`<button class="backlink" data-notes>← Lesson notes</button>
+   <div class="meta"><span>${esc(l.it)}</span><span>${Math.min(run.pos+1,run.queue.length)} of ${run.queue.length}</span></div>
+   <div class="progressbar"><span style="width:${run.pos/run.queue.length*100}%"></span></div>`;
+  let body="";
+  if(e.t==="mc"){
+    if(!item.order)item.order=shuffle(e.o.map((_,i)=>i));
+    body=`<span class="label">Choose the answer</span><div class="ex-q">${e.q}</div>
+     <div class="options">${item.order.map(i=>`<button class="opt" data-mc="${i}">${esc(e.o[i])}</button>`).join("")}</div>`;
+  }else if(e.t==="fill"){
+    body=`<span class="label">Fill the gap</span><div class="ex-q">${e.q.replace("___",'<span class="blank"></span>')}</div>
+     <form id="fill-form" autocomplete="off"><input class="ex-input" id="fill-in" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" aria-label="Your answer"></form>`;
+  }else{
+    if(!item.tiles){const words=e.a.replace(/[.!?]/g,"").split(" ");item.tiles=shuffle([...words,...(e.extra||[])]).map((w,i)=>({w,i}));item.chosen=[]}
+    body=`<span class="label">Put the words in order</span><div class="ex-q">${esc(e.en)}</div>
+     <div class="tiles answer" id="tiles-ans">${item.chosen.map(t=>`<button class="tile" data-untile="${t.i}">${esc(t.w)}</button>`).join("")}</div>
+     <div class="tiles" id="tiles-bank">${item.tiles.filter(t=>!item.chosen.includes(t)).map(t=>`<button class="tile" data-tile="${t.i}">${esc(t.w)}</button>`).join("")}</div>`;
+  }
+  const check=e.t==="mc"?"":`<button class="btn primary" id="ex-check">Check</button>`;
+  CO.innerHTML=`${head}<div class="ex-card">${item.review?`<span class="review-tag">Second try</span>`:""}${body}<div id="ex-fb"></div>
+   <div class="ex-actions" id="ex-actions">${check}</div></div>`;
+  const inp=document.getElementById("fill-in");if(inp&&matchMedia("(pointer:fine)").matches)inp.focus();
+}
+let shownAt=0;
+function showFeedback(res,correctText,e,sayText){
+  const item=run.queue[run.pos];run.answered=true;shownAt=Date.now();
+  const ok=res!=="wrong";
+  if(!item.review&&!(item.k in run.firstTry))run.firstTry[item.k]=ok;
+  if(!ok&&!item.review)run.queue.push({e,k:item.k,review:true});
+  const head=res==="right"?"Corretto!":res==="near"?"Nearly. Mind the accent.":"Not quite.";
+  document.getElementById("ex-fb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}"><b>${head}</b>${res!=="right"?`<div class="ans">${esc(correctText)}</div>`:""}${e.why?`<div>${e.why}</div>`:""}${!ok&&!item.review?`<div class="label" style="margin-top:6px">This one will come round again</div>`:""}</div>`;
+  document.getElementById("ex-actions").innerHTML=`${sayText?spkBtn(sayText):""}<button class="btn primary" id="ex-next">${run.pos+1<run.queue.length?"Continue →":"See result"}</button>`;
+  if(sayText)say(sayText);
+  CO.querySelectorAll(".opt,.tile,#fill-in").forEach(x=>x.disabled=true);
+}
+function checkCurrent(){
+  if(run.answered)return;
+  const item=run.queue[run.pos],e=item.e;
+  if(e.t==="fill"){const v=document.getElementById("fill-in").value;if(!v.trim()){toast("Type your answer first.");return}
+    const j=judge(v,e.a);const inp=document.getElementById("fill-in");inp.style.borderColor=j.res==="wrong"?"var(--bad)":"var(--ok)";
+    showFeedback(j.res,j.best,e,fillSentence(e,j.best));}
+  else if(e.t==="build"){if(!item.chosen.length){toast("Tap the words to build the sentence.");return}
+    const j=judge(item.chosen.map(t=>t.w).join(" "),[e.a]);showFeedback(j.res,e.a,e,e.a);}
+}
+CO.addEventListener("click",ev=>{
+  const t=ev.target;
+  const o=t.closest("[data-open]");if(o){lessonView={i:+o.dataset.open,mode:"notes"};renderCourse();toTop();return}
+  if(t.closest("[data-back]")){lessonView=null;run=null;renderCourse();toTop();applyUpdateIfSafe();return}
+  if(t.closest("[data-notes]")){lessonView.mode="notes";run=null;renderCourse();toTop();return}
+  if(t.closest("[data-practise]")){startPractice();return}
+  if(!run)return;
+  const item=run.queue&&run.queue[run.pos];
+  const mc=t.closest("[data-mc]");
+  if(mc&&!run.answered){const e=item.e,pick=+mc.dataset.mc,ok=pick===e.a;
+    CO.querySelectorAll("[data-mc]").forEach(b=>{if(+b.dataset.mc===e.a)b.classList.add("right")});if(!ok)mc.classList.add("wrong");
+    showFeedback(ok?"right":"wrong",e.o[e.a].replace(/<[^>]+>/g,""),e,null);return}
+  const tile=t.closest("[data-tile]");if(tile&&!run.answered){item.chosen.push(item.tiles[+tile.dataset.tile]);renderExercise();return}
+  const ut=t.closest("[data-untile]");if(ut&&!run.answered){item.chosen=item.chosen.filter(x=>x.i!==+ut.dataset.untile);renderExercise();return}
+  if(t.closest("#ex-check")){checkCurrent();return}
+  if(t.closest("#ex-next")){if(Date.now()-shownAt<350)return;run.pos++;run.answered=false;
+    if(run.pos>=run.queue.length){finishPractice()}else renderExercise();return}
+  if(t.closest("[data-again]")){startPractice();return}
+  if(t.closest("[data-nextlesson]")){lessonView={i:lessonView.i+1,mode:"notes"};run=null;renderCourse();toTop();return}
+});
+CO.addEventListener("submit",ev=>{ev.preventDefault();if(run&&run.answered)document.getElementById("ex-next").click();else checkCurrent()});
+document.addEventListener("keydown",ev=>{if(currentTab==="course"&&run&&run.answered&&ev.key==="Enter"&&!ev.target.matches("button,input")){const n=document.getElementById("ex-next");if(n)n.click()}});
+function finishPractice(){
+  const l=COURSE[lessonView.i];const right=Object.values(run.firstTry).filter(Boolean).length;const pct=Math.round(right/run.total*100);
+  const prev=S.lessons[l.id];if(!prev||pct>prev[0])S.lessons[l.id]=[pct,Date.now()];
+  run.result={right,pct,prev:prev?prev[0]:null};lessonView.mode="result";markStudied();renderLesson();toTop();
+}
+function renderResult(){
+  const l=COURSE[lessonView.i],r=run.result,pass=r.pct>=PASS,last=lessonView.i>=COURSE.length-1;
+  const missed=l.ex.filter((e,k)=>run.firstTry[k]===false);
+  CO.innerHTML=`<button class="backlink" data-back>← All lessons</button>
+   <div class="result"><span class="label">${esc(l.it)}</span><div class="score">${r.pct}%</div>
+   <div class="verdict">${pass?(r.pct===100?"Perfetto!":"Molto bene! Lesson complete."):"Quasi. Have another go."}</div>
+   <p>${r.right} of ${run.total} right first time.${pass?"":` You need ${PASS}% to complete the lesson.`}${r.prev!=null&&r.pct<=r.prev?` Your best is ${S.lessons[l.id][0]}%.`:""}</p>
+   ${missed.length?`<p class="label">Worth another look</p><ul class="misses">${missed.map(e=>`<li><span>${e.t==="build"?esc(e.a):e.t==="fill"?esc(fillSentence(e,e.a[0])):e.o[e.a]}</span></li>`).join("")}</ul>`:""}
+   <div class="row" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+   ${pass&&!last?`<button class="btn primary" data-nextlesson>Next lesson →</button>`:""}
+   <button class="btn ${pass&&!last?"":"primary"}" data-again>Practise again</button><button class="btn" data-notes>Lesson notes</button></div></div>`;
+  renderStats();
+}
+function lessonInProgress(){return !!(run&&lessonView&&lessonView.mode==="practise")}
 
 /* ---------- flashcards (Leitner boxes 0–5) ---------- */
 const C=document.getElementById("tab-cards");
@@ -402,41 +1148,93 @@ Q.addEventListener("click",e=>{
   save();say(w.it);const n=document.getElementById("q-next");n.hidden=false;
 });
 
-/* ---------- verbs ---------- */
+/* ---------- verbs: conjugation tables and quick fire ---------- */
 const V=document.getElementById("tab-verbs");
-let verb="essere";
-function renderVerbs(){
-  const [en]=VERBS[verb];
-  V.innerHTML=`<div class="toolbar">${Object.keys(VERBS).map(v=>{const b=S.verbs[v];return `<button class="chip" data-verb="${v}" aria-pressed="${v===verb}">${v}${b?`<span class="best">${b[0]}/6</span>`:""}</button>`}).join("")}</div>
-  <div class="verb-head"><h2>${verb}</h2><span>${en} · present tense (presente)</span>${spkBtn(verb)}</div>
-  <form id="conj-form" autocomplete="off"><div class="conj">
-  ${PRONOUNS.map((p,i)=>`<label for="c${i}">${p}</label><input id="c${i}" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="${i<5?"next":"done"}"><span class="mark" id="m${i}"></span><span class="fix" id="f${i}" hidden></span>`).join("")}
-  </div>
-  <div class="toolbar"><button class="btn primary" type="submit">Check answers</button><button class="btn" type="button" id="conj-show">Show answers</button><button class="btn" type="button" id="conj-clear">Clear</button></div></form>
-  <p class="label" id="conj-score"></p>`;
+let verb="essere",vMode="table",qf=null;
+const VGROUPS=[["Regular -are",v=>!IRREGULAR.includes(v)&&v.endsWith("are")],["Regular -ere",v=>!IRREGULAR.includes(v)&&v.endsWith("ere")],
+  ["Regular -ire",v=>!IRREGULAR.includes(v)&&v.endsWith("ire")],["Irregular",v=>IRREGULAR.includes(v)]];
+function vBest(v,t){const b=S.verbs[v+"|"+t];return b?b[0]:null}
+function auxNote(v,t){
+  if(t!=="passato")return"";
+  return auxOf(v)==="essere"?`<p class="aux-note"><b>Uses essere</b>, so the ending agrees with the subject: -o or -a in the singular, -i or -e in the plural. Either is accepted. Type the whole form, e.g. <i>sono andato</i>.</p>`
+    :`<p class="aux-note"><b>Uses avere.</b> Type the whole form, e.g. <i>ho ${esc(participle(v))}</i>.</p>`;
 }
-function verbsInProgress(){return [...V.querySelectorAll(".conj input")].some(i=>i.value.trim()&&!i.className)}
+function renderVerbs(){
+  const tenseChips=Object.entries(TENSES).map(([k,n])=>`<button class="chip" data-tense="${k}" aria-pressed="${k===S.vTense}">${n}</button>`).join("")
+    +(vMode==="quick"?`<button class="chip" data-tense="all" aria-pressed="${S.vTense==="all"}">All tenses</button>`:"");
+  const modes=`<button class="chip" data-vmode="table" aria-pressed="${vMode==="table"}">Conjugation table</button><button class="chip" data-vmode="quick" aria-pressed="${vMode==="quick"}">Quick fire (10)</button>`;
+  let body;
+  if(vMode==="table"){
+    if(S.vTense==="all")S.vTense="presente";
+    const groups=VGROUPS.map(([name,f])=>`<div class="vgroup"><span class="label">${name}</span><div class="toolbar" style="margin:0">${Object.keys(VERB_DB).filter(f).map(v=>{const b=vBest(v,S.vTense);return`<button class="chip" data-verb="${v}" aria-pressed="${v===verb}">${v}${b!=null?`<span class="best">${b}/6</span>`:""}</button>`}).join("")}</div></div>`).join("");
+    body=`${groups}
+    <div class="verb-head" style="margin-top:18px"><h2>${verb}</h2><span>${esc(VERB_DB[verb].en)} · ${TENSES[S.vTense]}</span>${spkBtn(verb)}</div>${auxNote(verb,S.vTense)}
+    <form id="conj-form" autocomplete="off"><div class="conj">
+    ${PERSONS.map((p,i)=>`<label for="c${i}">${p}</label><input id="c${i}" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="${i<5?"next":"done"}"><span class="mark" id="m${i}"></span><span class="fix" id="f${i}" hidden></span>`).join("")}
+    </div>
+    <div class="toolbar"><button class="btn primary" type="submit">Check answers</button><button class="btn" type="button" id="conj-show">Show answers</button><button class="btn" type="button" id="conj-clear">Clear</button></div></form>
+    <p class="label" id="conj-score"></p>`;
+  }else body=renderQuick();
+  V.innerHTML=`<div class="toolbar">${modes}</div><div class="toolbar">${tenseChips}</div>${body}`;
+}
+function verbsInProgress(){return [...V.querySelectorAll(".conj input")].some(i=>i.value.trim()&&!i.className)||!!(qf&&vMode==="quick"&&qf.pos>0&&qf.pos<qf.items.length)}
 function checkVerbs(show){
-  const forms=VERBS[verb].slice(1);let right=0;
-  forms.forEach((f,i)=>{const inp=document.getElementById("c"+i),m=document.getElementById("m"+i),fx=document.getElementById("f"+i);
+  const forms=conjugate(verb,S.vTense);let right=0;
+  forms.forEach((acc,i)=>{const inp=document.getElementById("c"+i),m=document.getElementById("m"+i),fx=document.getElementById("f"+i);
     inp.classList.remove("right","near","wrong");fx.hidden=true;
-    if(show){inp.value=f;inp.classList.add("right");m.textContent="";return}
-    const v=inp.value.trim().toLowerCase();
-    if(v===f){inp.classList.add("right");m.textContent="✓";m.style.color="var(--ok)";right++}
-    else if(v&&strip(v)===strip(f)){inp.classList.add("near");m.textContent="~";m.style.color="var(--warn)";fx.hidden=false;fx.textContent="Mind the accent: "+f;right++}
-    else{inp.classList.add("wrong");m.textContent="✗";m.style.color="var(--bad)";fx.hidden=false;fx.textContent="Answer: "+f}
+    if(show){inp.value=acc[0];inp.classList.add("right");m.textContent="";return}
+    const j=judge(inp.value,acc);
+    if(j.res==="right"){inp.classList.add("right");m.textContent="✓";m.style.color="var(--ok)";right++}
+    else if(j.res==="near"){inp.classList.add("near");m.textContent="~";m.style.color="var(--warn)";fx.hidden=false;fx.textContent="Mind the accent: "+j.best;right++}
+    else{inp.classList.add("wrong");m.textContent="✗";m.style.color="var(--bad)";fx.hidden=false;fx.textContent="Answer: "+acc.join(" / ")}
   });
   document.getElementById("conj-score").textContent=show?"":`${right} of 6 correct`;
-  if(!show){const b=S.verbs[verb];if(!b||right>b[0])S.verbs[verb]=[right,Date.now()];markStudied();
-    const chip=V.querySelector(`[data-verb="${verb}"]`);if(chip)chip.innerHTML=`${verb}<span class="best">${S.verbs[verb][0]}/6</span>`}
+  if(!show){const k=verb+"|"+S.vTense,b=S.verbs[k];if(!b||right>b[0])S.verbs[k]=[right,Date.now()];markStudied();
+    const chip=V.querySelector(`[data-verb="${verb}"]`);if(chip)chip.innerHTML=`${verb}<span class="best">${S.verbs[k][0]}/6</span>`}
 }
+function newQuick(){
+  const tenses=S.vTense==="all"?Object.keys(TENSES):[S.vTense],verbs=Object.keys(VERB_DB);
+  qf={items:Array.from({length:10},()=>({v:verbs[Math.floor(Math.random()*verbs.length)],t:tenses[Math.floor(Math.random()*tenses.length)],p:Math.floor(Math.random()*6)})),pos:0,score:0,answered:false,misses:[]};
+}
+function renderQuick(){
+  if(!qf)newQuick();
+  if(qf.pos>=qf.items.length){
+    return`<div class="result"><div class="score">${qf.score}<span style="font-size:1.6rem;color:var(--muted)">/10</span></div><div class="verdict">${qf.score>=9?"Perfetto!":qf.score>=7?"Molto bene!":"Keep at it."}</div>
+    ${qf.misses.length?`<p class="label">To review</p><ul class="misses">${qf.misses.map(m=>`<li><span>${esc(m.who)} · ${esc(m.v)}</span><span>${esc(m.ans)}</span></li>`).join("")}</ul>`:""}
+    <button class="btn primary" id="qf-again">Another 10</button></div>`;
+  }
+  const it=qf.items[qf.pos];
+  return`<div class="meta"><span>Question ${qf.pos+1} of 10</span><span>Score ${qf.score}</span></div><div class="progressbar"><span style="width:${qf.pos*10}%"></span></div>
+   <div class="ex-card"><div class="qf-prompt"><span class="who">${PERSONS[it.p]}</span><span class="verb">${it.v}</span><span class="tense">${TENSES[it.t]}</span></div>
+   <p class="aux-note" style="margin:0 0 8px">${esc(VERB_DB[it.v].en)}</p>
+   <form id="qf-form" autocomplete="off"><input class="ex-input" id="qf-in" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" aria-label="Your answer"></form>
+   <div id="qf-fb"></div><div class="ex-actions" id="qf-actions"><button class="btn primary" id="qf-check">Check</button></div></div>`;
+}
+let qfShown=0;
+function checkQuick(){
+  if(qf.answered){if(Date.now()-qfShown<350)return;qf.pos++;qf.answered=false;if(qf.pos>=qf.items.length)markStudied();renderVerbs();focusQf();return}
+  const it=qf.items[qf.pos],acc=conjugate(it.v,it.t)[it.p],inp=document.getElementById("qf-in");
+  if(!inp.value.trim()){toast("Type your answer first.");return}
+  const j=judge(inp.value,acc),ok=j.res!=="wrong";qf.answered=true;qfShown=Date.now();
+  if(ok)qf.score++;else qf.misses.push({who:PERSONS[it.p],v:it.v+" ("+TENSES[it.t]+")",ans:acc[0]});
+  inp.disabled=true;inp.style.borderColor=ok?"var(--ok)":"var(--bad)";
+  document.getElementById("qf-fb").innerHTML=`<div class="feedback ${ok?"ok":"bad"}"><b>${j.res==="right"?"Corretto!":j.res==="near"?"Nearly. Mind the accent.":"Not quite."}</b>${j.res!=="right"?`<div class="ans">${esc(acc.join(" / "))}</div>`:""}</div>`;
+  document.getElementById("qf-actions").innerHTML=`${spkBtn(acc[0])}<button class="btn primary" id="qf-check">${qf.pos<9?"Next →":"See result"}</button>`;
+  say(acc[0]);
+}
+function focusQf(){const i=document.getElementById("qf-in");if(i&&matchMedia("(pointer:fine)").matches)i.focus()}
 V.addEventListener("click",e=>{
-  const b=e.target.closest("[data-verb]");if(b){verb=b.dataset.verb;renderVerbs();return}
+  const m=e.target.closest("[data-vmode]");if(m){vMode=m.dataset.vmode;if(vMode==="quick")newQuick();renderVerbs();focusQf();return}
+  const tn=e.target.closest("[data-tense]");if(tn){S.vTense=tn.dataset.tense;save();if(vMode==="quick")newQuick();renderVerbs();focusQf();return}
+  const b=e.target.closest("[data-verb]");if(b){verb=b.dataset.verb;renderVerbs();const h=V.querySelector(".verb-head");if(h&&h.getBoundingClientRect().top>innerHeight*.6)h.scrollIntoView({block:"start",behavior:"smooth"});return}
   if(e.target.closest("#conj-show"))checkVerbs(true);
   if(e.target.closest("#conj-clear")){renderVerbs();document.getElementById("c0").focus()}
+  if(e.target.closest("#qf-check"))checkQuick();
+  if(e.target.closest("#qf-again")){newQuick();renderVerbs();focusQf();applyUpdateIfSafe()}
 });
 V.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.matches(".conj input")){const i=+e.target.id.slice(1);if(i<5){e.preventDefault();document.getElementById("c"+(i+1)).focus()}}});
-V.addEventListener("submit",e=>{e.preventDefault();document.activeElement&&document.activeElement.blur();checkVerbs(false)});
+V.addEventListener("submit",e=>{e.preventDefault();if(e.target.id==="qf-form"){checkQuick();return}document.activeElement&&document.activeElement.blur();checkVerbs(false)});
+document.addEventListener("keydown",e=>{if(currentTab==="verbs"&&qf&&qf.answered&&e.key==="Enter"&&!e.target.matches("button,input"))checkQuick()});
 
 /* ---------- phrases ---------- */
 document.getElementById("tab-phrases").innerHTML=`<p class="label">Pronunciation in four rules</p>
@@ -456,7 +1254,7 @@ function deviceName(){const u=navigator.userAgent;
   if(/iPhone/.test(u))return"iPhone";if(/iPad/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return"iPad";
   if(/Android/.test(u))return/Mobile/.test(u)?"Android phone":"Android tablet";if(/Macintosh/.test(u))return"Mac";if(/Windows/.test(u))return"Windows PC";return"computer"}
 function syncBody(){return{app:"quaderno-italiano",format:1,from:deviceName(),made:Date.now(),appVersion:APP_VERSION,
-  words:S.words,days:S.days,best:S.best,verbs:S.verbs,resetAt:S.resetAt}}
+  words:S.words,days:S.days,best:S.best,verbs:S.verbs,lessons:S.lessons,resetAt:S.resetAt}}
 function syncFile(type){const d=new Date();return new File([JSON.stringify(syncBody())],
   `italiano-progress-${deviceName().replace(/\s+/g,"-")}-${dayKey(d)}.json`,{type})}
 function fmt(ms){return new Date(ms).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}
@@ -495,20 +1293,22 @@ function planMerge(d){
   }
   const newDays=(d.days||[]).filter(x=>!S.days.includes(x));
   const bestIn=d.best&&d.best[1]>cutoff&&(!S.best||S.best[1]<=cutoff||d.best[0]>S.best[0])?d.best:null;
-  const verbsIn={};for(const [v,b] of Object.entries(d.verbs||{})){const m=S.verbs[v];if(b[1]>cutoff&&(!m||m[1]<=cutoff||b[0]>m[0]))verbsIn[v]=b}
-  return{d,cutoff,newer,wordsIn,newDays,bestIn,verbsIn};
+  const verbsIn={};for(let [v,b] of Object.entries(d.verbs||{})){if(v.indexOf("|")<0)v+="|presente";const m=S.verbs[v];if(Array.isArray(b)&&b[1]>cutoff&&(!m||m[1]<=cutoff||b[0]>m[0]))verbsIn[v]=b}
+  const lessonsIn={};for(const [id,b] of Object.entries(d.lessons||{})){const m=S.lessons[id];if(Array.isArray(b)&&b[1]>cutoff&&(!m||m[1]<=cutoff||b[0]>m[0]))lessonsIn[id]=b}
+  return{d,cutoff,newer,wordsIn,newDays,bestIn,verbsIn,lessonsIn};
 }
 function showPreview(text){
   const box_=document.getElementById("sync-preview");
   try{pending=planMerge(readSync(text))}catch(e){pending=null;box_.hidden=true;toast(e.message);return}
-  const p=pending;const nothing=!p.newer.length&&!p.newDays.length&&!p.bestIn&&!Object.keys(p.verbsIn).length&&!Object.keys(p.wordsIn).length;
+  const p=pending;const nothing=!p.newer.length&&!p.newDays.length&&!p.bestIn&&!Object.keys(p.verbsIn).length&&!Object.keys(p.wordsIn).length&&!Object.keys(p.lessonsIn).length;
   const list=p.newer.slice(0,8).map(([it,nb,ob])=>`<li>${esc(it)}: level ${ob==null?"new":ob} → ${nb}</li>`).join("")+(p.newer.length>8?`<li>…and ${p.newer.length-8} more</li>`:"");
   box_.innerHTML=`<div class="preview"><b>From your ${esc(p.d.from||"other device")}, made ${fmt(p.d.made)}</b>
     ${nothing?`<p style="margin:6px 0 0;color:var(--ink)">This device already has everything in that file.</p>`:
     `<ul>${p.newer.length?`<li>${p.newer.length} word${p.newer.length===1?"":"s"} practised more recently there</li>`:""}
     ${p.newDays.length?`<li>${p.newDays.length} study day${p.newDays.length===1?"":"s"} to add to your streak</li>`:""}
     ${p.bestIn?`<li>Best quiz score ${p.bestIn[0]}/10</li>`:""}
-    ${Object.keys(p.verbsIn).length?`<li>Better verb scores for ${Object.keys(p.verbsIn).join(", ")}</li>`:""}</ul>
+    ${Object.keys(p.lessonsIn).length?`<li>Better scores for ${Object.keys(p.lessonsIn).length} lesson${Object.keys(p.lessonsIn).length===1?"":"s"}: ${COURSE.filter(l=>p.lessonsIn[l.id]).map(l=>esc(l.title)).join(", ")}</li>`:""}
+    ${Object.keys(p.verbsIn).length?`<li>Better scores for ${Object.keys(p.verbsIn).length} verb table${Object.keys(p.verbsIn).length===1?"":"s"}</li>`:""}</ul>
     ${list?`<details><summary>Show words</summary><ul>${list}</ul></details>`:""}`}
     <div class="row" style="margin-top:10px">${nothing?"":`<button class="btn primary" id="sync-merge">Merge into this device</button>`}<button class="btn" id="sync-cancel">${nothing?"OK":"Cancel"}</button></div></div>`;
   box_.hidden=false;
@@ -522,12 +1322,12 @@ document.getElementById("sync-preview").addEventListener("click",e=>{
   if(e.target.closest("#sync-merge")&&pending){
     const p=pending;
     if(p.cutoff>(S.resetAt||0)){S.resetAt=p.cutoff;for(const k in S.words)if(S.words[k][1]<=p.cutoff)delete S.words[k];
-      if(S.best&&S.best[1]<=p.cutoff)S.best=null;for(const k in S.verbs)if(S.verbs[k][1]<=p.cutoff)delete S.verbs[k]}
-    Object.assign(S.words,p.wordsIn);Object.assign(S.verbs,p.verbsIn);
+      if(S.best&&S.best[1]<=p.cutoff)S.best=null;for(const k in S.verbs)if(S.verbs[k][1]<=p.cutoff)delete S.verbs[k];for(const k in S.lessons)if(S.lessons[k][1]<=p.cutoff)delete S.lessons[k]}
+    Object.assign(S.words,p.wordsIn);Object.assign(S.verbs,p.verbsIn);Object.assign(S.lessons,p.lessonsIn);
     const fromDay=p.cutoff?dayKey(new Date(p.cutoff)):"";
     S.days=[...new Set([...S.days,...(p.d.days||[])])].filter(x=>typeof x==="string"&&x>=fromDay).sort().slice(-400);
     if(p.bestIn)S.best=p.bestIn;S.lastGot=Date.now();save();
-    const n=p.newer.length;clearPending();renderStats();buildQueue();renderVerbs();refreshSyncStatus();
+    const n=p.newer.length;clearPending();renderStats();buildQueue();renderVerbs();if(!lessonInProgress())renderCourse();refreshSyncStatus();
     toast(`Merged. ${n} word${n===1?"":"s"} updated.`);
   }
 });
@@ -553,7 +1353,7 @@ document.getElementById("install-steps").addEventListener("click",e=>{if(e.targe
 const rc=document.getElementById("reset-confirm");
 document.getElementById("reset").onclick=()=>rc.hidden=false;
 document.getElementById("reset-no").onclick=()=>rc.hidden=true;
-document.getElementById("reset-yes").onclick=()=>{S.words={};S.best=null;S.days=[];S.verbs={};S.resetAt=Date.now();save();rc.hidden=true;renderStats();buildQueue();startQuiz();renderVerbs();
+document.getElementById("reset-yes").onclick=()=>{S.words={};S.best=null;S.days=[];S.verbs={};S.lessons={};S.resetAt=Date.now();save();rc.hidden=true;lessonView=null;run=null;renderStats();buildQueue();startQuiz();renderVerbs();renderCourse();
   toast("Progress reset on this device. Syncing will carry the reset to your other device.",4000)};
 
 /* ---------- offline + automatic updates (same approach as Site Ready) ----------
@@ -575,7 +1375,7 @@ function checkForUpdate(){
   }).catch(()=>{});
 }
 function applyUpdateIfSafe(){
-  if(!updateReady||quizInProgress()||verbsInProgress()||pending||(currentTab==="cards"&&cur&&done>0))return;
+  if(!updateReady||lessonInProgress()||quizInProgress()||verbsInProgress()||pending||(currentTab==="cards"&&cur&&done>0))return;
   try{sessionStorage.setItem("italiano.updated","1")}catch(e){}
   location.reload();
 }
@@ -588,8 +1388,8 @@ if(hosted){
 }
 
 document.getElementById("ver").textContent="Version "+APP_VERSION;
-renderStats();buildQueue();startQuiz();renderVerbs();refreshSyncStatus();installSteps();
-window.__italiano={state:()=>S,merge:t=>showPreview(t)};
+renderStats();renderCourse();buildQueue();startQuiz();renderVerbs();refreshSyncStatus();installSteps();
+window.__italiano={state:()=>S,merge:t=>showPreview(t),run:()=>run};
 </script>
 </body>
 </html>

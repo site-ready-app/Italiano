@@ -12,7 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Italiano">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<script>window.SITE_BUILD="7fa49c4afe96";</script>
+<script>window.SITE_BUILD="5209c8754a61";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -223,6 +223,10 @@ details summary{cursor:pointer;color:var(--blue);font-weight:600;padding:6px 0}
 .drive-hero b{display:block;font-family:var(--f-display);font-size:1.45rem;line-height:1.2;margin-top:2px}
 .drive-hero p{margin:6px 0 0;opacity:.85;font-size:.92rem;max-width:52ch}
 .dr-start{background:var(--paper);color:var(--ink);border-color:var(--paper);font-size:1.1rem;padding:14px 22px}
+.dr-starts{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.btn.dr-again,.btn.dr-again:hover{background:transparent;color:var(--paper);border-color:var(--paper);font-size:.95rem;padding:8px 16px}
+.dr-again small{display:block;font-weight:400;font-size:.75rem;opacity:.8}
+.result .btn.dr-again,.result .btn.dr-again:hover{background:var(--card);color:var(--ink);border-color:var(--ink)}
 .dr-review{border-color:var(--blue)}
 .dr-select{font:500 .95rem var(--f-body);padding:8px;border:1.5px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);max-width:100%}
 .dr-check{display:flex;gap:8px;align-items:flex-start;margin:6px 0 10px;font-size:.92rem}
@@ -235,6 +239,13 @@ details summary{cursor:pointer;color:var(--blue);font-weight:600;padding:6px 0}
 .dr-controls{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-top:auto}
 .btn.dr-big,.btn.dr-big:hover{font-size:1.5rem;padding:26px 10px;background:var(--blue);border-color:var(--blue);color:var(--paper)}
 body.driving header,body.driving nav,body.driving .footnote{display:none}
+.goal-week,.goal-ms{padding:10px 0 12px;border-bottom:1px dashed var(--line);margin-bottom:6px}
+.ms-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;margin:6px 0 4px}
+.ms{font:500 .62rem var(--f-mono);text-align:center;padding:4px 0;border-radius:3px;background:var(--grid);color:var(--muted);font-variant-numeric:tabular-nums;overflow:hidden}
+.ms.big{font-weight:700}
+@media (max-width:520px){.ms-row{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.ms.hit{background:var(--blue);color:var(--paper)}
+.ms.now{outline:2px solid var(--blue);color:var(--blue)}
 /* Vocabulary tracker */
 .vocab-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}
 .vocab-nums b{display:block;font-family:var(--f-display);font-size:1.9rem;line-height:1.05;font-variant-numeric:tabular-nums}
@@ -1095,7 +1106,7 @@ function conjugate(inf,tense){
 
 </script>
 <script>
-const APP_VERSION="3.0";
+const APP_VERSION="3.1";
 const DECKS = {
  "Basics":[["ciao","hi / bye"],["buongiorno","good morning"],["buonasera","good evening"],["buonanotte","good night"],["arrivederci","goodbye"],["per favore","please"],["grazie","thank you"],["prego","you're welcome"],["scusi","excuse me (formal)"],["sì","yes"],["mi dispiace","I'm sorry"],["va bene","okay / all right"],["piacere","nice to meet you"],["benvenuto","welcome"],["non lo so","I don't know"]],
  "Numbers":[["uno","one"],["due","two"],["tre","three"],["quattro","four"],["cinque","five"],["sei","six"],["sette","seven"],["otto","eight"],["nove","nine"],["dieci","ten"],["venti","twenty"],["cinquanta","fifty"],["cento","one hundred"],["mille","one thousand"]],
@@ -1311,17 +1322,39 @@ function knownRate(){ // new known words per day over the last 14 days
   const span=Math.max(1,(new Date(today)-new Date(firstDay))/864e5);
   return Math.max(0,(learnedCount()-start)/Math.min(14,span));
 }
+const MILESTONES=Array.from({length:12},(_,i)=>(i+1)*250); // 250, 500 … 3,000
+const WEEK_GOALS=[25,50,75,100];
+function fmtDate(ms){return new Date(ms).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}
+function weekStart(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d} // Monday
+function knownThisWeek(){
+  const ws=dayKey(weekStart()),days=Object.keys(S.kday||{}).sort();
+  const before=days.filter(d=>d<ws).pop();
+  return Math.max(0,learnedCount()-(before?S.kday[before]:0));
+}
 function renderVocab(){
   const el=document.getElementById("vocab");if(!el)return;
+  if(!S.weekGoal)S.weekGoal=50;
   const k=learnedCount(),h=heardCount(),rate=knownRate();
-  const next=TARGETS.find(t=>k<t[0]);
-  const fc=next&&rate>0?new Date(Date.now()+Math.ceil((next[0]-k)/rate)*864e5).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}):null;
+  const nextM=MILESTONES.find(m=>k<m),next=TARGETS.find(t=>k<t[0]);
+  const pace=rate>0?rate:S.weekGoal/7,paceLabel=rate>0?"at your current pace":`at ${S.weekGoal} words a week`;
+  const when=n=>fmtDate(Date.now()+Math.ceil((n-k)/pace)*864e5);
+  const prevM=nextM?nextM-250:3000,mPct=nextM?Math.round((k-prevM)/250*100):100;
+  const wk=knownThisWeek(),wPct=Math.min(100,wk/S.weekGoal*100);
+  const daysLeft=7-((new Date().getDay()+6)%7);
   el.innerHTML=`<div class="panel vocab"><div class="vocab-nums"><div><b>${k.toLocaleString("en-GB")}</b><span>confirmed known</span></div><div><b>${h.toLocaleString("en-GB")}</b><span>heard in the car</span></div>
    <div><b>${rate?rate.toFixed(1):"–"}</b><span>new words a day (last 14 days)</span></div></div>
+   <div class="goal-week"><div class="t-head"><span><b>This week</b> · ${wk} of ${S.weekGoal} new words</span><span class="label">${wk>=S.weekGoal?"target met ✓":daysLeft+" day"+(daysLeft===1?"":"s")+" left"}</span></div>
+    <div class="tbar"><span class="tk" style="width:${wPct}%"></span></div>
+    <div class="toolbar" style="margin:6px 0 0"><span class="t-desc">Weekly target:</span>${WEEK_GOALS.map(g=>`<button class="chip" data-weekgoal="${g}" aria-pressed="${g===S.weekGoal}">${g}</button>`).join("")}</div></div>
+   <div class="goal-ms"><div class="t-head"><span><b>Next milestone</b> · ${nextM?nextM.toLocaleString("en-GB")+" words":"all reached"}</span><span class="label">${nextM?(nextM-k)+" to go":"✓"}</span></div>
+    <div class="tbar"><span class="tk" style="width:${mPct}%"></span></div>
+    <div class="ms-row">${MILESTONES.map(m=>`<span class="ms${k>=m?" hit":m===nextM?" now":""}${m%1000===0?" big":""}" title="${m} words">${m<1000?m:(m/1000)+"k"}</span>`).join("")}</div>
+    ${nextM?`<span class="t-desc">${paceLabel[0].toUpperCase()+paceLabel.slice(1)}, you'll reach ${nextM.toLocaleString("en-GB")} around <b>${when(nextM)}</b>.</span>`:""}</div>
    ${TARGETS.map(([n,name,desc])=>{const pct=Math.min(100,k/n*100),hp=Math.min(100,h/n*100);return`<div class="target"><div class="t-head"><span><b>${name}</b> · ${n.toLocaleString("en-GB")} words</span><span class="label">${k>=n?"reached ✓":Math.round(pct)+"%"}</span></div>
-   <div class="tbar"><span class="th" style="width:${hp}%"></span><span class="tk" style="width:${pct}%"></span></div><span class="t-desc">${desc}</span></div>`}).join("")}
-   <p class="dr-note">${next?(fc?`At your current pace you'll reach <b>${next[0].toLocaleString("en-GB")}</b> (${next[1].toLowerCase()}) around <b>${fc}</b>.`:`Practise for a few days and a forecast date for ${next[0].toLocaleString("en-GB")} words will appear here.`):"All three targets reached. Bravissimo!"} The pale bar is words heard in the car; the dark bar is words you've confirmed in a review.</p></div>`;
+   <div class="tbar"><span class="th" style="width:${hp}%"></span><span class="tk" style="width:${pct}%"></span></div><span class="t-desc">${desc}${k<n?` · ${paceLabel}: ${when(n)}`:""}</span></div>`}).join("")}
+   <p class="dr-note">${rate>0?"":"Forecasts use your weekly target until there are a few days of practice to measure. "}The pale bar is words heard in the car; the dark bar is words you've confirmed in a review.</p></div>`;
 }
+document.getElementById("vocab").addEventListener("click",e=>{const g=e.target.closest("[data-weekgoal]");if(g){S.weekGoal=+g.dataset.weekgoal;save();renderVocab()}});
 
 /* ---------- flashcards (Leitner boxes 0–5) ---------- */
 const C=document.getElementById("tab-cards"),CA=document.getElementById("cards-area");
@@ -1847,9 +1880,18 @@ function wheelOn(){
     navigator.mediaSession.setActionHandler("pause",()=>pause());navigator.mediaSession.setActionHandler("play",()=>resume());
   }catch(e){}
 }
-function start(){
+const LAST_KEY="quaderno-italiano-lastdrive";
+function saveLast(sc){try{localStorage.setItem(LAST_KEY,JSON.stringify({made:Date.now(),fi:sc.plan.fi,title:sc.plan.lesson.title,mins:sc.mins,steps:sc.steps}))}catch(e){}}
+function loadLast(){try{const v=JSON.parse(localStorage.getItem(LAST_KEY)||"null");return v&&Array.isArray(v.steps)?v:null}catch(e){return null}}
+function replayScript(){
+  const L=loadLast();if(!L)return null;
+  const steps=L.steps.slice();
+  steps[0]={k:"say",lang:"en",text:`Here's your last lesson again, lesson ${L.fi+1}, ${L.title}. Say each answer out loud before you hear it.`};
+  return{steps,plan:{fi:L.fi,lesson:COURSE[L.fi]||COURSE[0],vItems:[],due:[]},mins:L.mins,replay:true};
+}
+function start(replay){
   if(!("speechSynthesis" in window)){toast("This device can't speak, so Drive mode won't work here.");return}
-  script=buildScript();pos=0;running=true;paused=false;
+  script=replay?replayScript():buildScript();if(!script){toast("There's no previous lesson on this phone yet.");return}if(!replay)saveLast(script);pos=0;running=true;paused=false;
   sessionLog={start:Date.now(),pausedMs:0,saved:0,items:{},words:{},moved:{},firstTime:{}};
   try{speechSynthesis.cancel()}catch(e){}
   renderPlayer();lockScreen();wheelOn();next();
@@ -1874,6 +1916,7 @@ function voiceLine(){
 function chips(name,opts,cur){return opts.map(([v,l])=>`<button class="chip" data-${name}="${v}" aria-pressed="${String(v)===String(cur)}">${l}</button>`).join("")}
 function renderDrive(){
   if(running)return;
+  const last=loadLast();
   const p=buildScript(),pl=p.plan,today=dayKey(new Date());
   const todays=ds.sessions.filter(s=>dayKey(new Date(s.start))===today);
   const heardWords=Object.keys(S.heard).filter(k=>!k.includes(":")).length;
@@ -1881,7 +1924,7 @@ function renderDrive(){
   DR.innerHTML=`<div class="drive-hero"><div><span class="label">Today's car lesson</span>
      <b>${p.mins} minutes · lesson ${pl.fi+1}: ${esc(pl.lesson.title)}</b>
      <p>${p.newWords} new words, ${p.newSent} new sentences, ${pl.vItems.length} verb forms and ${Math.min(pl.due.length,999)} items due for review.</p></div>
-     <button class="btn dr-start" id="dr-go">▶ Start lesson</button></div>
+     <div class="dr-starts"><button class="btn dr-start" id="dr-go">▶ Start lesson</button>${last?`<button class="btn dr-again" id="dr-again">↻ Repeat last lesson<small>${last.mins} min · ${esc(new Date(last.made).toLocaleString("en-GB",{weekday:"short",hour:"2-digit",minute:"2-digit"}))}</small></button>`:""}</div></div>
    ${toReview?`<div class="panel dr-review"><h2>${toReview} car word${toReview===1?"":"s"} to confirm</h2><p>A quick check when you're parked. Words you get right count towards your known total.</p><button class="btn primary" id="dr-rev">Review now (about ${Math.max(2,Math.round(Math.min(toReview,25)*8/60))} min)</button></div>`:""}
    <div class="panel"><h2>Settings</h2>
     <span class="label">Length</span><div class="toolbar">${chips("len",[[10,"10 min"],[20,"20 min"],[30,"30 min"]],ds.len)}</div>
@@ -1911,7 +1954,7 @@ function renderEnd(complete){
   DR.innerHTML=`<div class="result"><span class="label">${complete?"Lesson complete":"Lesson ended"}</span><div class="score">${items}</div>
    <div class="verdict">items practised</div><p>${n} word${n===1?"":"s"} logged as heard in the car. Your progress is saved.</p>
    ${toReview?`<p>When you're parked: confirm the words you know in a quick review.</p><button class="btn primary" id="dr-rev">Review ${Math.min(toReview,25)} words</button>`:""}
-   <button class="btn" id="dr-back">Done</button></div>`;
+   <div class="toolbar" style="justify-content:center;margin-top:12px"><button class="btn" id="dr-again">↻ Repeat this lesson</button><button class="btn" id="dr-back">Done</button></div></div>`;
   renderStats();if(window.renderVocab)renderVocab();
 }
 window.renderDrive=renderDrive;
@@ -1929,7 +1972,8 @@ function goReview(){
 
 DR.addEventListener("click",e=>{
   const t=e.target;
-  if(t.closest("#dr-go")){start();return}
+  if(t.closest("#dr-go")){start(false);return}
+  if(t.closest("#dr-again")){start(true);return}
   if(t.closest("#dr-pause")){paused?resume():pause();return}
   if(t.closest("#dr-stop")){quit();return}
   if(t.closest("#dr-back")){renderDrive();return}

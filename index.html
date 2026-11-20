@@ -12,7 +12,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Italiano">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<script>window.SITE_BUILD="7d138902d979";</script>
+<script>window.SITE_BUILD="2adbfe4d53ed";</script>
+<script>(function(){var k="quaderno-italiano-scheme",s=null;try{s=localStorage.getItem(k)}catch(e){}
+if(!s)s=(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"notte":"mare";
+document.documentElement.setAttribute("data-scheme",s);})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -43,6 +46,27 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit
 .wrap{max-width:860px;margin:0 auto;padding-top:max(20px,env(safe-area-inset-top,0px));padding-bottom:max(48px,env(safe-area-inset-bottom,0px));
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .page{position:relative;padding-left:24px}
+/* Colour schemes. "quaderno" keeps the original squared paper (and follows the phone's dark mode). */
+:root[data-scheme="mare"]{--paper:#e6eff4;--paper2:#f5f9fb;--grid:#d3e2ea;--ink:#12263a;--muted:#4f6475;--blue:#0f5e8c;--blue-soft:#d4e7f2;--red:#b8452f;--margin:#b8452f;
+  --ok:#1d7a4f;--ok-soft:#dcefe4;--bad:#b3262f;--bad-soft:#f6dfe0;--warn:#a86b00;--card:#ffffff;--line:#c4d5df;color-scheme:light}
+:root[data-scheme="limone"]{--paper:#efeed9;--paper2:#faf9ee;--grid:#e2e0c6;--ink:#2a2a1d;--muted:#646350;--blue:#4b6a1e;--blue-soft:#e1e9cc;--red:#a8432a;--margin:#a8432a;
+  --ok:#2f7a3a;--ok-soft:#deeed7;--bad:#b0312a;--bad-soft:#f5e0d9;--warn:#9a6a00;--card:#fffef5;--line:#d6d4b8;color-scheme:light}
+:root[data-scheme="tramonto"]{--paper:#f6e4d8;--paper2:#fdf5ef;--grid:#efd7c8;--ink:#33211b;--muted:#73574b;--blue:#a8442b;--blue-soft:#f4d9cb;--red:#7d3a8c;--margin:#7d3a8c;
+  --ok:#2b7a4b;--ok-soft:#dcefe2;--bad:#a8262c;--bad-soft:#f5dcdc;--warn:#946100;--card:#fffaf6;--line:#e4c9b9;color-scheme:light}
+:root[data-scheme="notte"]{--paper:#111a2b;--paper2:#18233a;--grid:#1d2840;--ink:#e8ecf4;--muted:#9aa7bd;--blue:#8ab4ff;--blue-soft:#22335a;--red:#ff9a8a;--margin:#ff9a8a;
+  --ok:#6fd39d;--ok-soft:#1b3a2b;--bad:#ff8a8f;--bad-soft:#40242a;--warn:#f0b955;--card:#1b2640;--line:#2d3a57;color-scheme:dark}
+:root[data-scheme]:not([data-scheme="quaderno"]) body{background-image:linear-gradient(180deg,var(--paper2) 0,var(--paper) 360px);background-size:auto;background-attachment:fixed}
+:root[data-scheme]:not([data-scheme="quaderno"]) .page{padding-left:0}
+:root[data-scheme]:not([data-scheme="quaderno"]) .page::before{display:none}
+.schemes{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;margin-right:6px}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;position:relative}
+.sw[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--ink)}
+.sw.mare{background:linear-gradient(135deg,#e6eff4 50%,#0f5e8c 50%)}
+.sw.limone{background:linear-gradient(135deg,#efeed9 50%,#4b6a1e 50%)}
+.sw.tramonto{background:linear-gradient(135deg,#f6e4d8 50%,#a8442b 50%)}
+.sw.notte{background:linear-gradient(135deg,#111a2b 50%,#8ab4ff 50%)}
+.sw.quaderno{background:#f7f8f4;background-image:linear-gradient(#cdd8e2 1px,transparent 1px),linear-gradient(90deg,#cdd8e2 1px,transparent 1px);background-size:6px 6px}
+
 .page::before{content:"";position:absolute;left:6px;top:0;bottom:0;width:2px;background:var(--margin)}
 
 header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
@@ -319,7 +343,12 @@ body.driving header,body.driving nav,body.driving .footnote{display:none}
   </div>
 </section>
 
-<p class="footnote"><span id="ver"></span> · Progress is saved on this device; use Sync to share it. <button class="linkish" id="reset">Reset progress</button><span id="reset-confirm" hidden class="confirm">Erase everything on this device? <button class="btn" id="reset-yes">Yes, reset</button><button class="btn" id="reset-no">Cancel</button></span></p>
+<p class="footnote"><span class="schemes" role="group" aria-label="Colour scheme"><span>Colours:</span>
+<button class="sw mare" data-scheme="mare" title="Mare (sea blue)" aria-label="Mare, sea blue"></button>
+<button class="sw limone" data-scheme="limone" title="Limone (lemon and olive)" aria-label="Limone, lemon and olive"></button>
+<button class="sw tramonto" data-scheme="tramonto" title="Tramonto (sunset)" aria-label="Tramonto, sunset"></button>
+<button class="sw notte" data-scheme="notte" title="Notte (night)" aria-label="Notte, night"></button>
+<button class="sw quaderno" data-scheme="quaderno" title="Quaderno (squared paper)" aria-label="Quaderno, squared paper"></button></span><br><span id="ver"></span> · Progress is saved on this device; use Sync to share it. <button class="linkish" id="reset">Reset progress</button><span id="reset-confirm" hidden class="confirm">Erase everything on this device? <button class="btn" id="reset-yes">Yes, reset</button><button class="btn" id="reset-no">Cancel</button></span></p>
 </div></div>
 
 <script>
@@ -1108,7 +1137,7 @@ function conjugate(inf,tense){
 
 </script>
 <script>
-const APP_VERSION="3.2";
+const APP_VERSION="3.3";
 const DECKS = {
  "Basics":[["ciao","hi / bye"],["buongiorno","good morning"],["buonasera","good evening"],["buonanotte","good night"],["arrivederci","goodbye"],["per favore","please"],["grazie","thank you"],["prego","you're welcome"],["scusi","excuse me (formal)"],["sì","yes"],["mi dispiace","I'm sorry"],["va bene","okay / all right"],["piacere","nice to meet you"],["benvenuto","welcome"],["non lo so","I don't know"]],
  "Numbers":[["uno","one"],["due","two"],["tre","three"],["quattro","four"],["cinque","five"],["sei","six"],["sette","seven"],["otto","eight"],["nove","nine"],["dieci","ten"],["venti","twenty"],["cinquanta","fifty"],["cento","one hundred"],["mille","one thousand"]],
@@ -1678,6 +1707,16 @@ function installSteps(){
 }
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;installSteps()});
 document.getElementById("install-steps").addEventListener("click",e=>{if(e.target.closest("#install-btn")&&deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;installSteps()})}});
+
+
+/* ---------- colour schemes ---------- */
+const SCHEME_KEY="quaderno-italiano-scheme",SCHEME_BAR={mare:"#0f5e8c",limone:"#4b6a1e",tramonto:"#a8442b",notte:"#111a2b",quaderno:"#1f4fb5"};
+function applyScheme(name){document.documentElement.setAttribute("data-scheme",name);
+  document.querySelectorAll(".sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.scheme===name));
+  const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",SCHEME_BAR[name]||"#1f4fb5")}
+applyScheme(document.documentElement.getAttribute("data-scheme")||"mare");
+document.querySelector(".schemes").addEventListener("click",e=>{const b=e.target.closest("[data-scheme]");if(!b)return;
+  try{localStorage.setItem(SCHEME_KEY,b.dataset.scheme)}catch(x){}applyScheme(b.dataset.scheme)});
 
 /* ---------- reset ---------- */
 const rc=document.getElementById("reset-confirm");

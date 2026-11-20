@@ -12,7 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Italiano">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<script>window.SITE_BUILD="5209c8754a61";</script>
+<script>window.SITE_BUILD="7d138902d979";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -52,7 +52,7 @@ h1 em{font-style:italic;font-weight:500;color:var(--blue)}
 .stats{display:flex;gap:18px;font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
 .stats b{display:block;font-family:var(--f-display);font-size:1.6rem;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
 
-nav{display:flex;gap:2px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;border-bottom:2px solid var(--ink);margin-bottom:22px}
+nav{display:flex;gap:2px 2px;flex-wrap:wrap;border-bottom:2px solid var(--ink);margin-bottom:22px}
 nav::-webkit-scrollbar{display:none}
 nav button{flex:none}
 nav button{font:600 .95rem var(--f-body);background:none;border:0;color:var(--muted);padding:10px 12px;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-2px}
@@ -224,6 +224,8 @@ details summary{cursor:pointer;color:var(--blue);font-weight:600;padding:6px 0}
 .drive-hero p{margin:6px 0 0;opacity:.85;font-size:.92rem;max-width:52ch}
 .dr-start{background:var(--paper);color:var(--ink);border-color:var(--paper);font-size:1.1rem;padding:14px 22px}
 .dr-starts{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.dr-endbtns{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-top:18px}
+.dr-endbtns .btn{min-height:84px}
 .btn.dr-again,.btn.dr-again:hover{background:transparent;color:var(--paper);border-color:var(--paper);font-size:.95rem;padding:8px 16px}
 .dr-again small{display:block;font-weight:400;font-size:.75rem;opacity:.8}
 .result .btn.dr-again,.result .btn.dr-again:hover{background:var(--card);color:var(--ink);border-color:var(--ink)}
@@ -276,7 +278,7 @@ body.driving header,body.driving nav,body.driving .footnote{display:none}
 
 <nav role="tablist">
   <button role="tab" data-tab="course" aria-selected="true">Course<small>corso</small></button>
-  <button role="tab" data-tab="drive" aria-selected="false">Drive<small>in macchina</small></button>
+  <button role="tab" data-tab="drive" aria-selected="false">Drive<small>in auto</small></button>
   <button role="tab" data-tab="verbs" aria-selected="false">Verbs<small>verbi</small></button>
   <button role="tab" data-tab="cards" aria-selected="false">Words<small>parole</small></button>
   <button role="tab" data-tab="quiz" aria-selected="false">Quiz<small>prova</small></button>
@@ -1106,7 +1108,7 @@ function conjugate(inf,tense){
 
 </script>
 <script>
-const APP_VERSION="3.1";
+const APP_VERSION="3.2";
 const DECKS = {
  "Basics":[["ciao","hi / bye"],["buongiorno","good morning"],["buonasera","good evening"],["buonanotte","good night"],["arrivederci","goodbye"],["per favore","please"],["grazie","thank you"],["prego","you're welcome"],["scusi","excuse me (formal)"],["sì","yes"],["mi dispiace","I'm sorry"],["va bene","okay / all right"],["piacere","nice to meet you"],["benvenuto","welcome"],["non lo so","I don't know"]],
  "Numbers":[["uno","one"],["due","two"],["tre","three"],["quattro","four"],["cinque","five"],["sei","six"],["sette","seven"],["otto","eight"],["nove","nine"],["dieci","ten"],["venti","twenty"],["cinquanta","fifty"],["cento","one hundred"],["mille","one thousand"]],
@@ -1948,13 +1950,13 @@ function renderPlayer(){
   document.body.classList.add("driving");
 }
 function renderEnd(complete){
-  document.body.classList.remove("driving");
+  // keep the header hidden so the large buttons are on screen without scrolling
   const n=sessionLog?Object.keys(sessionLog.words).length:0,items=sessionLog?Object.keys(sessionLog.items).length:0;
   const toReview=carWordsToReview().length;
-  DR.innerHTML=`<div class="result"><span class="label">${complete?"Lesson complete":"Lesson ended"}</span><div class="score">${items}</div>
-   <div class="verdict">items practised</div><p>${n} word${n===1?"":"s"} logged as heard in the car. Your progress is saved.</p>
-   ${toReview?`<p>When you're parked: confirm the words you know in a quick review.</p><button class="btn primary" id="dr-rev">Review ${Math.min(toReview,25)} words</button>`:""}
-   <div class="toolbar" style="justify-content:center;margin-top:12px"><button class="btn" id="dr-again">↻ Repeat this lesson</button><button class="btn" id="dr-back">Done</button></div></div>`;
+  DR.innerHTML=`<div class="dr-player"><span class="label">${complete?"Lesson complete":"Lesson ended"} · ${items} items practised</span>
+   <div class="dr-endbtns"><button class="btn dr-big" id="dr-again">↻ Repeat this lesson</button><button class="btn" id="dr-back">Done</button></div>
+   <p>${n} word${n===1?"":"s"} logged as heard in the car. Your progress is saved.</p>
+   ${toReview?`<p class="dr-note">When you're parked: confirm the words you know in a quick review.</p><div><button class="btn primary" id="dr-rev">Review ${Math.min(toReview,25)} words</button></div>`:""}</div>`;
   renderStats();if(window.renderVocab)renderVocab();
 }
 window.renderDrive=renderDrive;
@@ -1966,6 +1968,7 @@ function carWordsToReview(){
 }
 window.carWordsToReview=carWordsToReview;
 function goReview(){
+  document.body.classList.remove("driving");
   S.deck="From the car";save();
   document.querySelector('nav [data-tab="cards"]').click();buildQueue();window.scrollTo(0,0);
 }
@@ -1976,7 +1979,7 @@ DR.addEventListener("click",e=>{
   if(t.closest("#dr-again")){start(true);return}
   if(t.closest("#dr-pause")){paused?resume():pause();return}
   if(t.closest("#dr-stop")){quit();return}
-  if(t.closest("#dr-back")){renderDrive();return}
+  if(t.closest("#dr-back")){document.body.classList.remove("driving");renderDrive();return}
   if(t.closest("#dr-rev")){goReview();return}
   if(t.closest("#dr-test")){pickVoices();const a={k:"say",lang:"en",text:"This is the English voice."},b={k:"say",lang:"it",text:"E questa è la voce italiana. Buon viaggio!"};try{speechSynthesis.cancel()}catch(x){}speak(a,()=>speak(b,()=>{}));return}
   const l=t.closest("[data-len]");if(l){ds.len=+l.dataset.len;save();renderDrive();return}

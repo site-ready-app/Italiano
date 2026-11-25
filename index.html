@@ -12,7 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Italiano">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<script>window.SITE_BUILD="2adbfe4d53ed";</script>
+<script>window.SITE_BUILD="cf1c0914ae21";</script>
 <script>(function(){var k="quaderno-italiano-scheme",s=null;try{s=localStorage.getItem(k)}catch(e){}
 if(!s)s=(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"notte":"mare";
 document.documentElement.setAttribute("data-scheme",s);})();</script>
@@ -255,6 +255,9 @@ details summary{cursor:pointer;color:var(--blue);font-weight:600;padding:6px 0}
 .result .btn.dr-again,.result .btn.dr-again:hover{background:var(--card);color:var(--ink);border-color:var(--ink)}
 .dr-review{border-color:var(--blue)}
 .dr-select{font:500 .95rem var(--f-body);padding:8px;border:1.5px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);max-width:100%}
+.voice-pick{display:grid;gap:6px;margin:8px 0 4px}
+.voice-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.voice-row .dr-select{flex:1;min-width:0}
 .dr-check{display:flex;gap:8px;align-items:flex-start;margin:6px 0 10px;font-size:.92rem}
 .dr-note{font-size:.88rem;color:var(--muted);max-width:62ch}
 .dr-warn{font-size:.92rem;color:var(--bad);max-width:62ch}
@@ -1137,7 +1140,7 @@ function conjugate(inf,tense){
 
 </script>
 <script>
-const APP_VERSION="3.3";
+const APP_VERSION="3.4";
 const DECKS = {
  "Basics":[["ciao","hi / bye"],["buongiorno","good morning"],["buonasera","good evening"],["buonanotte","good night"],["arrivederci","goodbye"],["per favore","please"],["grazie","thank you"],["prego","you're welcome"],["scusi","excuse me (formal)"],["sì","yes"],["mi dispiace","I'm sorry"],["va bene","okay / all right"],["piacere","nice to meet you"],["benvenuto","welcome"],["non lo so","I don't know"]],
  "Numbers":[["uno","one"],["due","two"],["tre","three"],["quattro","four"],["cinque","five"],["sei","six"],["sette","seven"],["otto","eight"],["nove","nine"],["dieci","ten"],["venti","twenty"],["cinquanta","fifty"],["cento","one hundred"],["mille","one thousand"]],
@@ -1184,7 +1187,7 @@ function renderStats(){
 /* ---------- speech ---------- */
 const canSpeak="speechSynthesis" in window;
 let itVoice=null;
-function pickVoice(){try{const v=speechSynthesis.getVoices();itVoice=v.find(x=>/^it/i.test(x.lang))||null}catch(e){}}
+function pickVoice(){try{if(window.__pickIt){itVoice=window.__pickIt();return}const v=speechSynthesis.getVoices();itVoice=v.find(x=>/^it/i.test(x.lang))||null}catch(e){}}
 if(canSpeak){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}}
 function say(text){if(!canSpeak)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace("…",""));u.lang="it-IT";if(itVoice)u.voice=itVoice;u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
 const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
@@ -1775,13 +1778,21 @@ if(!S.drive)S.drive={len:20,think:"normal",newWords:12,focus:"auto",sessions:[],
 const ds=S.drive;
 
 /* ---------- voices ---------- */
-let itV=null,enV=null;
+let itV=null,enV=null,allIt=[],allEn=[];
+/* quality from the voice's id/name: Premium > Enhanced > the rest */
+function quality(v){const t=(v.voiceURI||"")+" "+v.name;return /premium/i.test(t)?2:/enhanced|neural|natural/i.test(t)?1:0}
+function qLabel(v){return["","Enhanced","Premium"][quality(v)]}
+function vKey(v){return v.voiceURI||v.name}
+window.__pickIt=()=>{pickVoices();return itV};
 function pickVoices(){
   try{const vs=speechSynthesis.getVoices();
-    const it=vs.filter(v=>/^it/i.test(v.lang)),en=vs.filter(v=>/^en/i.test(v.lang));
-    const better=v=>/enhanced|premium|neural|natural/i.test(v.name)?2:/alice|federica|luca|paola/i.test(v.name)?1:0;
-    itV=it.sort((a,b)=>better(b)-better(a))[0]||null;
-    enV=(en.filter(v=>/GB/i.test(v.lang)).sort((a,b)=>better(b)-better(a))[0])||en[0]||null;
+    allIt=vs.filter(v=>/^it/i.test(v.lang));allEn=vs.filter(v=>/^en/i.test(v.lang));
+    const rank=(a,b)=>quality(b)-quality(a)||(/GB/i.test(b.lang)-/GB/i.test(a.lang))||a.name.localeCompare(b.name);
+    allIt.sort(rank);allEn.sort(rank);
+    // a voice chosen in Settings wins; otherwise the best one the phone offers (British English preferred)
+    itV=(ds.itVoice&&allIt.find(v=>vKey(v)===ds.itVoice))||allIt[0]||null;
+    enV=(ds.enVoice&&allEn.find(v=>vKey(v)===ds.enVoice))||allEn[0]||null;
+    try{itVoice=itV}catch(e){} // the rest of the app (cards, phrases) uses the same Italian voice
   }catch(e){}
 }
 if("speechSynthesis" in window){pickVoices();try{speechSynthesis.addEventListener("voiceschanged",()=>{pickVoices();if(!running)renderDrive()})}catch(e){}}
@@ -1951,8 +1962,14 @@ function quit(){if(sessionLog)saveSession(false);stopAll();renderEnd(false)}
 /* ---------- screens ---------- */
 function voiceLine(){
   if(!("speechSynthesis" in window))return`<p class="dr-warn">This browser can't speak, so Drive mode won't work here.</p>`;
-  if(!itV)return`<p class="dr-warn">No Italian voice found yet. On iPhone: Settings → Accessibility → Spoken Content → Voices → Italian, and download one (an "Enhanced" voice sounds best).</p>`;
-  return`<p class="dr-note">Italian voice: <b>${esc(itV.name)}</b>${/enhanced|premium/i.test(itV.name)?"":". For a more natural voice, download an Enhanced Italian voice in Settings → Accessibility → Spoken Content → Voices"}.</p>`;
+  if(!allIt.length&&!allEn.length)return`<p class="dr-note">Loading the voices on this phone…</p>`;
+  const opt=(list,cur)=>`<option value="">Automatic (best available)</option>`+list.map(v=>`<option value="${esc(vKey(v))}"${cur===vKey(v)?" selected":""}>${esc(v.name)}${qLabel(v)&&!new RegExp(qLabel(v),"i").test(v.name)?" ("+qLabel(v)+")":""} · ${esc(v.lang)}</option>`).join("");
+  return`<div class="voice-pick"><label for="dr-envoice" class="label">English voice (the prompts)</label>
+     <div class="voice-row"><select id="dr-envoice" class="dr-select">${opt(allEn,ds.enVoice||"")}</select><button class="btn" data-testv="en">▶ Test</button></div>
+     <label for="dr-itvoice" class="label">Italian voice (the answers)</label>
+     <div class="voice-row"><select id="dr-itvoice" class="dr-select">${opt(allIt,ds.itVoice||"")}</select><button class="btn" data-testv="it">▶ Test</button></div>
+     ${allIt.length?"":`<p class="dr-warn">No Italian voice is available to the app yet.</p>`}
+     <p class="dr-note">These are the voices your iPhone lets the app use: ${allEn.length} English and ${allIt.length} Italian. Apple doesn't offer every voice from Settings to web apps, so a voice you've downloaded may not appear here. If you download a new voice, close the app fully and reopen it to refresh the list.</p></div>`;
 }
 function chips(name,opts,cur){return opts.map(([v,l])=>`<button class="chip" data-${name}="${v}" aria-pressed="${String(v)===String(cur)}">${l}</button>`).join("")}
 function renderDrive(){
@@ -1973,7 +1990,7 @@ function renderDrive(){
     <span class="label">New words per lesson</span><div class="toolbar">${chips("nw",[[8,"8"],[12,"12"],[16,"16"],[20,"20"]],ds.newWords)}</div>
     <span class="label">Sentences follow</span><div class="toolbar"><select id="dr-focus" class="dr-select"><option value="auto"${ds.focus==="auto"?" selected":""}>My next course lesson (${esc(COURSE[nextLessonIndex()??COURSE.length-1].title)})</option>${COURSE.map((l,i)=>`<option value="${l.id}"${ds.focus===l.id?" selected":""}>Lesson ${i+1}: ${esc(l.title)}</option>`).join("")}</select></div>
     <label class="dr-check"><input type="checkbox" id="dr-wheel"${ds.wheel?" checked":""}> Let the car's play/pause buttons pause the lesson (experimental)</label>
-    ${voiceLine()}<div class="toolbar"><button class="btn" id="dr-test">Test the voices</button></div>
+    ${voiceLine()}
    </div>
    <div class="panel"><h2>Before you drive</h2><ul class="steps">
     <li>Put the phone in a holder and connect it to the car (Bluetooth or CarPlay) <b>before setting off</b>, then tap Start.</li>
@@ -2020,7 +2037,8 @@ DR.addEventListener("click",e=>{
   if(t.closest("#dr-stop")){quit();return}
   if(t.closest("#dr-back")){document.body.classList.remove("driving");renderDrive();return}
   if(t.closest("#dr-rev")){goReview();return}
-  if(t.closest("#dr-test")){pickVoices();const a={k:"say",lang:"en",text:"This is the English voice."},b={k:"say",lang:"it",text:"E questa è la voce italiana. Buon viaggio!"};try{speechSynthesis.cancel()}catch(x){}speak(a,()=>speak(b,()=>{}));return}
+  const tv=t.closest("[data-testv]");if(tv){pickVoices();try{speechSynthesis.cancel()}catch(x){}
+    speak(tv.dataset.testv==="en"?{k:"say",lang:"en",text:"This is the English voice. Here's a new word: the station."}:{k:"say",lang:"it",text:"E questa è la voce italiana. La stazione. Buon viaggio!"},()=>{});return}
   const l=t.closest("[data-len]");if(l){ds.len=+l.dataset.len;save();renderDrive();return}
   const th=t.closest("[data-think]");if(th){ds.think=th.dataset.think;save();renderDrive();return}
   const nw=t.closest("[data-nw]");if(nw){ds.newWords=+nw.dataset.nw;save();renderDrive();return}
@@ -2028,6 +2046,7 @@ DR.addEventListener("click",e=>{
 DR.addEventListener("change",e=>{
   if(e.target.id==="dr-focus"){ds.focus=e.target.value;save();renderDrive()}
   if(e.target.id==="dr-wheel"){ds.wheel=e.target.checked;save()}
+  if(e.target.id==="dr-envoice"||e.target.id==="dr-itvoice"){ds[e.target.id==="dr-envoice"?"enVoice":"itVoice"]=e.target.value||null;save();pickVoices()}
 });
 document.querySelector('nav [data-tab="drive"]').addEventListener("click",()=>{if(!running)renderDrive()});
 renderDrive();
